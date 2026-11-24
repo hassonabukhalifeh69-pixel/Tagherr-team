@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#061326">
+  <meta name="description" content="قسم الكيمياء — TAGHEER TEAM">
+  <title>الكيمياء | TAGHEER TEAM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <style>
+    .chem-hero {
+      padding: 100px 0 75px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 20% 40%,#0874a833,transparent 48%),
+        linear-gradient(135deg,#071a30,#0a2542);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .chem-hero h1 {
+      font-size: clamp(48px,8vw,82px);
+      line-height: 1.4;
+      margin: 22px 0;
+    }
+
+    .chem-hero p {
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 2.2;
+      font-size: 13px;
+    }
+
+    .chem-symbol {
+      position: absolute;
+      left: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 180px;
+      color: #66bdef12;
+      font-weight: 800;
+      pointer-events: none;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+      color: var(--blue);
+    }
+
+    .chem-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-top: 45px;
+      max-width: 660px;
+    }
+
+    .chem-stat {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: #ffffff08;
+      border-radius: 10px;
+    }
+
+    .chem-stat strong {
+      display: block;
+      color: var(--blue);
+      font-size: 24px;
+    }
+
+    .chem-stat span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 16px;
+    }
+
+    .course-card {
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg,#102c49,#09192d);
+      transition: .25s;
+    }
+
+    .course-card:hover {
+      border-color: #66bdef80;
+      transform: translateY(-4px);
+    }
+
+    .course-number {
+      color: var(--blue);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .course-card h3 {
+      margin: 18px 0 8px;
+      font-size: 21px;
+    }
+
+    .course-card p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 2;
+    }
+
+    .course-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      padding-top: 17px;
+      border-top: 1px solid var(--line);
+      color: var(--blue);
+      font-size: 11px;
+    }
+
+    .course-action.pending {
+      color: #a8b8c9;
+    }
+
+    .science-tools {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 13px;
+    }
+
+    .science-tool {
+      min-height: 185px;
+      padding: 22px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #0a1d33;
+    }
+
+    .science-tool .tool-icon {
+      font-size: 30px;
+      color: var(--blue);
+    }
+
+    .science-tool h3 {
+      font-size: 14px;
+      margin: 18px 0 8px;
+    }
+
+    .science-tool p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.9;
+    }
+
+    .tool-status {
+      display: inline-block;
+      margin-top: 12px;
+      color: #8fc9ed;
+      font-size: 9px;
+      border: 1px solid #66bdef40;
+      border-radius: 30px;
+      padding: 5px 10px;
+    }
+
+    .chem-note {
+      margin-top: 25px;
+      padding: 20px;
+      border-right: 3px solid var(--blue);
+      background: #66bdef0c;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 2;
+    }
+
+    @media(max-width:700px) {
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      .science-tools {
+        grid-template-columns: repeat(2,1fr);
+      }
+      .chem-symbol {
+        font-size: 110px;
+        left: 2%;
+      }
+    }
+
+    @media(max-width:430px) {
+      .science-tools {
+        grid-template-columns: 1fr;
+      }
+      .chem-stats {
+        gap: 7px;
+      }
+      .chem-stat {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <a class="wordmark" href="../index.html">
+      <span class="wordmark-symbol">T</span>
+      <span>TAGHEER <b>TEAM</b></span>
+    </a>
+
+    <nav class="navigation">
+      <a href="../index.html">الرئيسية</a>
+      <a href="#courses">المواد الدراسية</a>
+      <a href="#laboratory">المختبر التفاعلي</a>
+      <a href="../index.html#about">عن الفريق</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="chem-hero">
+      <div class="shell">
+        <div class="breadcrumb">
+          <a href="../index.html">الرئيسية</a> / الأقسام العلمية / الكيمياء
+        </div>
+
+        <span class="kicker">ACADEMIC DEPARTMENT / CHEMISTRY</span>
+
+        <h1>
+          عالم الكيمياء<br>
+          <span class="gradient-text">بين يديك.</span>
+        </h1>
+
+        <p>
+          مساحة علمية متكاملة لدراسة الكيمياء واستكشاف مفاهيمها،
+          والوصول إلى مصادر المساقات، واستخدام أدوات ومحاكاة
+          تفاعلية تساعدك على فهم العلم بطريقة أعمق.
+        </p>
+
+        <div class="chem-stats">
+          <div class="chem-stat">
+            <strong>118</strong>
+            <span>عنصرًا في الجدول الدوري</span>
+          </div>
+          <div class="chem-stat">
+            <strong>04</strong>
+            <span>مساقات رئيسية</span>
+          </div>
+          <div class="chem-stat">
+            <strong>06</strong>
+            <span>أدوات علمية مخططة</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chem-symbol">⚗</div>
+    </section>
+
+    <section class="section shell" id="courses">
+      <div class="section-head">
+        <div>
+          <span class="kicker">COURSE LIBRARY / 01</span>
+          <h2>المواد <em>الدراسية</em></h2>
+        </div>
+        <p>كل مادة ستكون بوابة مباشرة إلى مجلدها الخاص على Google Drive.</p>
+      </div>
+
+      <div class="course-grid">
+
+        <article class="course-card">
+          <span class="course-number">COURSE 01</span>
+          <h3>فيزيكال 1</h3>
+          <p>Physical Chemistry I</p>
+          <div class="course-action pending">
+            <span>بانتظار ربط مجلد المادة</span>
+            <span>↗</span>
+          </div>
+        </article>
+
+        <article class="course-card">
+          <span class="course-number">COURSE 02</span>
+          <h3>فيزيكال 2</h3>
+          <p>Physical Chemistry II</p>
+          <div class="course-action pending">
+            <span>بانتظار ربط مجلد المادة</span>
+            <span>↗</span>
+          </div>
+        </article>
+
+        <article class="course-card">
+          <span class="course-number">COURSE 03</span>
+          <h3>فيزيكال 3</h3>
+          <p>Physical Chemistry III</p>
+          <div class="course-action pending">
+            <span>بانتظار ربط مجلد المادة</span>
+            <span>↗</span>
+          </div>
+        </article>
+
+        <article class="course-card">
+          <span class="course-number">COURSE 04</span>
+          <h3>مختبر الكيمياء</h3>
+          <p>Chemistry Laboratory</p>
+          <div class="course-action pending">
+            <span>بانتظار ربط مجلد المادة</span>
+            <span>↗</span>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="chem-note">
+        ملاحظة: لن تظهر داخل الموقع تصنيفات للمحاضرات أو الملخصات أو المراجع.
+        كل بطاقة مادة ستفتح مجلد Google Drive الذي يحتوي جميع ملفاتها.
+        روابط المجلدات ستضاف لاحقًا.
+      </div>
+    </section>
+
+    <section class="section tools-section" id="laboratory">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <span class="kicker">DIGITAL LAB / 02</span>
+            <h2>المختبر <em>التفاعلي</em></h2>
+          </div>
+          <p>أدوات رقمية قيد التطوير لتجربة المفاهيم الكيميائية بصورة تفاعلية.</p>
+        </div>
+
+        <div class="science-tools">
+
+          <article class="science-tool">
+            <span class="tool-icon">⚛</span>
+            <h3>Periodic Table Explorer</h3>
+            <p>جدول دوري تفاعلي لاستكشاف العناصر وخصائصها.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+          <article class="science-tool">
+            <span class="tool-icon">∑</span>
+            <h3>Molar Mass Calculator</h3>
+            <p>حساب الكتلة المولية للصيغ الكيميائية والمركبات.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+          <article class="science-tool">
+            <span class="tool-icon">🌡</span>
+            <h3>Temperature Simulator</h3>
+            <p>استكشاف تأثير درجة الحرارة في حالات المادة.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+          <article class="science-tool">
+            <span class="tool-icon">PV</span>
+            <h3>Ideal Gas Simulator</h3>
+            <p>محاكاة قانون الغاز المثالي وتغيّر متغيراته.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+          <article class="science-tool">
+            <span class="tool-icon">⌬</span>
+            <h3>Molecular Structure Visualizer</h3>
+            <p>عرض البنية الجزيئية والأشكال الهندسية للجزيئات.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+          <article class="science-tool">
+            <span class="tool-icon">pH</span>
+            <h3>pH Simulator</h3>
+            <p>استكشاف الأحماض والقواعد ومقياس الرقم الهيدروجيني.</p>
+            <span class="tool-status">قيد التطوير</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head">
+        <div>
+          <span class="kicker">LEARNING EXPERIENCE / 03</span>
+          <h2>افهم. جرّب. <em>اكتشف.</em></h2>
+        </div>
+      </div>
+
+      <div class="tool-showcase">
+        <div class="tool-feature">
+          <div class="feature-visual">
+            <div class="atom">
+              <i></i><i></i><i></i><b></b>
+            </div>
+          </div>
+
+          <div>
+            <span class="kicker">BEYOND THE TEXTBOOK</span>
+            <h3>الكيمياء ليست مجرد معادلات.</h3>
+            <p>
+              نعمل على تطوير تجربة تعليمية تربط النظريات
+              بالتطبيقات والتصورات العلمية التفاعلية.
+            </p>
+          </div>
+        </div>
+
+        <div class="tool-list">
+          <div><span>01</span><b>Explore</b><small>استكشف المفاهيم</small></div>
+          <div><span>02</span><b>Understand</b><small>افهم العلاقات</small></div>
+          <div><span>03</span><b>Experiment</b><small>جرّب بنفسك</small></div>
+          <div><span>04</span><b>Discover</b><small>اكتشف المزيد</small></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="shell footer-content">
+      <a class="wordmark" href="../index.html">
+        <span class="wordmark-symbol">T</span>
+        <span>TAGHEER <b>TEAM</b></span>
+      </a>
+      <p>قسم الكيمياء — TAGHEER TEAM</p>
+      <a href="../index.html">العودة للرئيسية ↑</a>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
