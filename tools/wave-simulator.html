@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Wave Simulator | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{
+ --blue:#66BDEF;--bg:#061326;--panel:#0c203b;
+ --text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2);
+}
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;color:var(--text);
+ background:radial-gradient(ellipse at top,#102c4b,var(--bg) 65%);
+ font-family:'Cairo',sans-serif;
+}
+header{
+ padding:18px 5%;display:flex;justify-content:space-between;
+ align-items:center;border-bottom:1px solid var(--line);
+ background:#041123bb;backdrop-filter:blur(12px);
+}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(26px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{
+ background:linear-gradient(145deg,#102a48,#07172b);
+ border:1px solid var(--line);border-radius:19px;
+ padding:20px;margin-bottom:17px;
+ box-shadow:0 15px 40px #0003;
+}
+.panel h2{font-size:17px;margin:0 0 14px}
+canvas{
+ display:block;width:100%;height:310px;
+ border-radius:13px;background:#07172b;
+ border:1px solid var(--line);
+}
+.legend{display:flex;gap:17px;flex-wrap:wrap;margin-top:12px;
+ color:var(--muted);font-size:12px}
+.dot{width:9px;height:9px;display:inline-block;
+ border-radius:50%;margin-left:5px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+button{
+ border:1px solid var(--line);background:#102d4e;color:white;
+ padding:10px 17px;border-radius:10px;font-family:inherit;
+ font-weight:700;cursor:pointer;transition:.2s;
+}
+button:hover{border-color:var(--blue);background:#173e65}
+button.primary{background:var(--blue);color:#061326}
+.grid{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.control-card{
+ background:#091b31;border:1px solid var(--line);
+ padding:15px;border-radius:13px;
+}
+.control-card label{display:flex;justify-content:space-between;
+ font-size:13px;font-weight:700;margin-bottom:12px}
+.control-card output{color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
+.metrics{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.metric{
+ background:#091b31;border:1px solid var(--line);
+ border-radius:13px;padding:17px;text-align:center;
+}
+.metric small{color:var(--muted);font-size:12px}
+.metric strong{display:block;font-size:25px;color:var(--blue);margin-top:5px}
+.formula{
+ padding:14px;background:#091b31;border:1px solid var(--line);
+ border-radius:12px;text-align:center;font-size:19px;
+ color:#c8e9ff;direction:ltr;
+}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+@media(max-width:700px){
+ .grid{grid-template-columns:1fr}
+ .metrics{grid-template-columns:1fr}
+ canvas{height:260px}
+ header{padding:15px 4%}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Wave <span>Simulator</span></h1>
+  <p>محاكي تفاعلي لفهم خصائص الموجات وسلوكها</p>
+ </section>
+
+ <section class="panel">
+  <h2>الموجة المستعرضة</h2>
+  <canvas id="waveCanvas" width="1000" height="420"></canvas>
+  <div class="legend">
+   <span><i class="dot" style="background:#66bdef"></i>الموجة</span>
+   <span><i class="dot" style="background:#f3b5ff"></i>القمم</span>
+   <span><i class="dot" style="background:#f7c96a"></i>القيعان</span>
+  </div>
+  <div class="controls">
+   <button class="primary" id="playBtn">Ⅱ إيقاف</button>
+   <button id="resetBtn">↺ إعادة الضبط</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>التحكم بخصائص الموجة</h2>
+  <div class="grid">
+   <div class="control-card">
+    <label>السعة (A) <output id="ampValue">60</output></label>
+    <input id="amplitude" type="range" min="10" max="120" value="60">
+   </div>
+   <div class="control-card">
+    <label>التردد (f) <output id="freqValue">2.0 Hz</output></label>
+    <input id="frequency" type="range" min="0.5" max="5" step="0.1" value="2">
+   </div>
+   <div class="control-card">
+    <label>الطول الموجي (λ) <output id="lengthValue">200</output></label>
+    <input id="wavelength" type="range" min="80" max="400" step="10" value="200">
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>النتائج والحسابات</h2>
+  <div class="metrics">
+   <div class="metric">
+    <small>سرعة الموجة (v)</small>
+    <strong id="speed">400</strong>
+    <small>وحدة/ثانية</small>
+   </div>
+   <div class="metric">
+    <small>الزمن الدوري (T)</small>
+    <strong id="period">0.50</strong>
+    <small>ثانية</small>
+   </div>
+   <div class="metric">
+    <small>التردد الزاوي (ω)</small>
+    <strong id="omega">12.57</strong>
+    <small>راديان/ثانية</small>
+   </div>
+  </div>
+  <div class="formula" style="margin-top:17px">
+   v = f × λ
+  </div>
+  <p class="info">
+   سرعة انتشار الموجة تساوي حاصل ضرب التردد في الطول الموجي.
+   الزمن الدوري هو الزمن اللازم لإكمال دورة واحدة، والتردد الزاوي
+   يعبّر عن معدل تغير الطور الزاوي للموجة.
+  </p>
+ </section>
+
+ <section class="panel">
+  <h2>مفاهيم أساسية</h2>
+  <div class="info">
+   <strong style="color:var(--blue)">السعة:</strong>
+   أكبر إزاحة عن موضع الاتزان.<br>
+   <strong style="color:var(--blue)">الطول الموجي:</strong>
+   المسافة بين قمتين متتاليتين أو قاعين متتاليين.<br>
+   <strong style="color:var(--blue)">التردد:</strong>
+   عدد الدورات التي تمر في الثانية الواحدة.<br>
+   <strong style="color:var(--blue)">القمة:</strong>
+   أعلى نقطة في الموجة.<br>
+   <strong style="color:var(--blue)">القاع:</strong>
+   أدنى نقطة في الموجة.
+  </div>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Physics Learning</footer>
+
+<script>
+const canvas=document.getElementById("waveCanvas");
+const ctx=canvas.getContext("2d");
+
+const amplitude=document.getElementById("amplitude");
+const frequency=document.getElementById("frequency");
+const wavelength=document.getElementById("wavelength");
+
+let running=true;
+let time=0;
+let lastTime=0;
+
+const centerY=210;
+const scaleX=1000;
+
+function values(){
+ const A=Number(amplitude.value);
+ const f=Number(frequency.value);
+ const lambda=Number(wavelength.value);
+
+ document.getElementById("ampValue").textContent=A;
+ document.getElementById("freqValue").textContent=f.toFixed(1)+" Hz";
+ document.getElementById("lengthValue").textContent=lambda;
+
+ const speed=f*lambda;
+ const period=1/f;
+ const omega=2*Math.PI*f;
+
+ document.getElementById("speed").textContent=speed.toFixed(1);
+ document.getElementById("period").textContent=period.toFixed(2);
+ document.getElementById("omega").textContent=omega.toFixed(2);
+}
+
+function draw(){
+ const w=canvas.width;
+ const h=canvas.height;
+ const A=Number(amplitude.value);
+ const f=Number(frequency.value);
+ const lambda=Number(wavelength.value);
+
+ ctx.clearRect(0,0,w,h);
+
+ // خلفية الشبكة
+ ctx.strokeStyle="rgba(102,189,239,.10)";
+ ctx.lineWidth=1;
+ for(let x=0;x<=w;x+=50){
+  ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();
+ }
+ for(let y=0;y<=h;y+=35){
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+ }
+
+ // خط الاتزان
+ ctx.setLineDash([8,7]);
+ ctx.strokeStyle="rgba(255,255,255,.4)";
+ ctx.beginPath();ctx.moveTo(0,centerY);ctx.lineTo(w,centerY);ctx.stroke();
+ ctx.setLineDash([]);
+
+ // الموجة
+ ctx.beginPath();
+ for(let x=0;x<=w;x++){
+  const y=centerY-A*Math.sin((2*Math.PI*x/lambda)-(time*2*Math.PI*f));
+  if(x===0)ctx.moveTo(x,y);
+  else ctx.lineTo(x,y);
+ }
+ ctx.strokeStyle="#66BDEF";
+ ctx.lineWidth=4;
+ ctx.shadowColor="#66BDEF";
+ ctx.shadowBlur=12;
+ ctx.stroke();
+ ctx.shadowBlur=0;
+
+ // القمم والقيعان
+ const k=2*Math.PI/lambda;
+ const phase=time*2*Math.PI*f;
+ const firstPeak=Math.PI/2+phase;
+ const firstTrough=3*Math.PI/2+phase;
+
+ for(let x=0;x<w;x+=lambda){
+  let px=(firstPeak/k+x)%w;
+  let py=centerY-A;
+  if(px>=0&&px<=w){
+   ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);
+   ctx.fillStyle="#f3b5ff";ctx.fill();
+  }
+  let tx=(firstTrough/k+x)%w;
+  let ty=centerY+A;
+  if(tx>=0&&tx<=w){
+   ctx.beginPath();ctx.arc(tx,ty,6,0,Math.PI*2);
+   ctx.fillStyle="#f7c96a";ctx.fill();
+  }
+ }
+
+ // سهم السعة
+ ctx.strokeStyle="#f3b5ff";
+ ctx.lineWidth=2;
+ ctx.beginPath();
+ ctx.moveTo(55,centerY);
+ ctx.lineTo(55,centerY-A);
+ ctx.stroke();
+ ctx.beginPath();
+ ctx.moveTo(49,centerY-A+8);
+ ctx.lineTo(55,centerY-A);
+ ctx.lineTo(61,centerY-A+8);
+ ctx.stroke();
+
+ ctx.fillStyle="#f3b5ff";
+ ctx.font="bold 19px Cairo";
+ ctx.fillText("A",68,centerY-A/2);
+
+ // تسمية الاتزان
+ ctx.fillStyle="#9eb5ce";
+ ctx.font="15px Cairo";
+ ctx.fillText("موضع الاتزان",12,centerY-10);
+}
+
+function animate(timestamp){
+ if(!lastTime)lastTime=timestamp;
+ const delta=Math.min((timestamp-lastTime)/1000,.05);
+ lastTime=timestamp;
+
+ if(running)time+=delta;
+ draw();
+ requestAnimationFrame(animate);
+}
+
+[amplitude,frequency,wavelength].forEach(input=>{
+ input.addEventListener("input",values);
+});
+
+document.getElementById("playBtn").addEventListener("click",()=>{
+ running=!running;
+ document.getElementById("playBtn").textContent=
+  running?"Ⅱ إيقاف":"▶ تشغيل";
+});
+
+document.getElementById("resetBtn").addEventListener("click",()=>{
+ amplitude.value=60;
+ frequency.value=2;
+ wavelength.value=200;
+ time=0;
+ values();
+});
+
+values();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
