@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#061326">
+  <meta name="description" content="قسم الرياضيات — TAGHEER TEAM">
+  <title>الرياضيات | TAGHEER TEAM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <style>
+    .math-hero {
+      padding: 100px 0 75px;
+      background:
+        radial-gradient(ellipse at 20% 45%,#7659d52b,transparent 48%),
+        linear-gradient(135deg,#071a30,#211b43);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .math-hero h1 {
+      font-size: clamp(48px,8vw,82px);
+      line-height: 1.4;
+      margin: 22px 0;
+    }
+
+    .math-hero p {
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 2.2;
+      font-size: 13px;
+    }
+
+    .math-symbol {
+      position: absolute;
+      left: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 210px;
+      color: #b5a2ff12;
+      pointer-events: none;
+    }
+
+    .math-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      max-width: 660px;
+      margin-top: 40px;
+    }
+
+    .math-stat {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: #ffffff08;
+      border-radius: 10px;
+    }
+
+    .math-stat strong {
+      display: block;
+      color: #b8a8ff;
+      font-size: 24px;
+    }
+
+    .math-stat span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .math-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 15px;
+    }
+
+    .math-tool-card {
+      min-height: 220px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg,#29244d,#0b1a31);
+      transition: .25s;
+    }
+
+    .math-tool-card:hover {
+      transform: translateY(-4px);
+      border-color: #b8a8ff88;
+    }
+
+    .math-icon {
+      font-size: 34px;
+      color: #b8a8ff;
+    }
+
+    .math-tool-card h3 {
+      margin: 18px 0 8px;
+      font-size: 15px;
+    }
+
+    .math-tool-card p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 2;
+    }
+
+    .math-status {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 11px;
+      border: 1px solid #b8a8ff55;
+      border-radius: 30px;
+      color: #c9bdff;
+      font-size: 9px;
+    }
+
+    .math-topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 13px;
+    }
+
+    .math-topic {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #0a1d33;
+    }
+
+    .math-topic strong {
+      display: block;
+      color: #b8a8ff;
+      margin-bottom: 10px;
+    }
+
+    .math-topic p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 2;
+    }
+
+    .math-equation {
+      direction: ltr;
+      text-align: center;
+      font-family: Georgia,serif;
+      font-size: 25px;
+      color: #d4cbff;
+      margin: 22px 0;
+      letter-spacing: 2px;
+    }
+
+    @media(max-width:700px) {
+      .math-tool-grid,
+      .math-topic-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+      .math-symbol {
+        font-size: 120px;
+      }
+    }
+
+    @media(max-width:480px) {
+      .math-tool-grid,
+      .math-topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="../index.html">
+      <span class="wordmark-symbol">T</span>
+      <span>TAGHEER <b>TEAM</b></span>
+    </a>
+
+    <nav class="navigation">
+      <a href="../index.html">الرئيسية</a>
+      <a href="#topics">المجالات</a>
+      <a href="#simulations">الأدوات التفاعلية</a>
+      <a href="../index.html#about">عن الفريق</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="math-hero">
+      <div class="shell">
+        <span class="kicker">ACADEMIC DEPARTMENT / MATHEMATICS</span>
+
+        <h1>
+          لغة الأرقام<br>
+          <span class="gradient-text">بلا حدود.</span>
+        </h1>
+
+        <p>
+          استكشف عالم الرياضيات من الجبر إلى التفاضل والتكامل،
+          ومن المصفوفات إلى الهندسة ثلاثية الأبعاد،
+          عبر أدوات تساعدك على تصور المفاهيم وفهم العلاقات الرياضية.
+        </p>
+
+        <div class="math-stats">
+          <div class="math-stat">
+            <strong>04</strong>
+            <span>أدوات تفاعلية مخططة</span>
+          </div>
+          <div class="math-stat">
+            <strong>∞</strong>
+            <span>احتمالات رياضية</span>
+          </div>
+          <div class="math-stat">
+            <strong>01</strong>
+            <span>عالم من المنطق</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="math-symbol">∑</div>
+    </section>
+
+    <section class="section shell" id="topics">
+      <div class="section-head">
+        <div>
+          <span class="kicker">MATHEMATICS EXPLORER / 01</span>
+          <h2>عالم <em>الرياضيات</em></h2>
+        </div>
+        <p>مجالات رياضية تساعد على التحليل والاستنتاج وحل المشكلات.</p>
+      </div>
+
+      <div class="math-topic-grid">
+        <article class="math-topic">
+          <strong>01 / ALGEBRA</strong>
+          <h3>الجبر</h3>
+          <p>المعادلات والمتغيرات والعلاقات الرياضية.</p>
+        </article>
+
+        <article class="math-topic">
+          <strong>02 / CALCULUS</strong>
+          <h3>التفاضل والتكامل</h3>
+          <p>المشتقات والتكاملات ومعدلات التغير.</p>
+        </article>
+
+        <article class="math-topic">
+          <strong>03 / GEOMETRY</strong>
+          <h3>الهندسة</h3>
+          <p>الأشكال والأبعاد والعلاقات الهندسية.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section tools-section" id="simulations">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <span class="kicker">MATHEMATICAL LAB / 02</span>
+            <h2>مختبر <em>الرياضيات</em></h2>
+          </div>
+          <p>أدوات رقمية مخططة لتصور الأفكار الرياضية والتعامل معها.</p>
+        </div>
+
+        <div class="math-tool-grid">
+          <article class="math-tool-card">
+            <span class="math-icon">▦</span>
+            <h3>Matrix & Vector Simulator</h3>
+            <p>إجراء عمليات المصفوفات والمتجهات وتمثيلها بصريًا.</p>
+            <div class="math-equation">A × B</div>
+            <span class="math-status">قيد التطوير</span>
+          </article>
+
+          <article class="math-tool-card">
+            <span class="math-icon">∫</span>
+            <h3>Calculus Visualizer</h3>
+            <p>تصور مفاهيم المشتقات والتكامل والمساحات ومعدلات التغير.</p>
+            <div class="math-equation">∫ f(x) dx</div>
+            <span class="math-status">قيد التطوير</span>
+          </article>
+
+          <article class="math-tool-card">
+            <span class="math-icon">%</span>
+            <h3>Statistics & Probability</h3>
+            <p>تحليل البيانات والاحتمالات والمقاييس الإحصائية.</p>
+            <div class="math-equation">P(A) = n(A) / n(S)</div>
+            <span class="math-status">قيد التطوير</span>
+          </article>
+
+          <article class="math-tool-card">
+            <span class="math-icon">◇</span>
+            <h3>3D Geometry Explorer</h3>
+            <p>استكشاف المجسمات والأبعاد والعلاقات الهندسية ثلاثية الأبعاد.</p>
+            <div class="math-equation">V = l × w × h</div>
+            <span class="math-status">قيد التطوير</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head">
+        <div>
+          <span class="kicker">THINK MATHEMATICALLY / 03</span>
+          <h2>حلّل الفكرة، <em>واكتشف النمط.</em></h2>
+        </div>
+      </div>
+
+      <div class="tool-showcase">
+        <div class="tool-feature">
+          <div class="feature-visual">
+            <div class="atom">
+              <i></i><i></i><i></i><b></b>
+            </div>
+          </div>
+
+          <div>
+            <span class="kicker">MATHEMATICS IN MOTION</span>
+            <h3>من الرمز إلى التصور.</h3>
+            <p>
+              نعمل على تطوير أدوات تربط التعبير الرياضي
+              بالتمثيل البصري، لتقريب المفاهيم وتحسين فهمها.
+            </p>
+          </div>
+        </div>
+
+        <div class="tool-list">
+          <div><span>01</span><b>Define</b><small>حدد المسألة</small></div>
+          <div><span>02</span><b>Calculate</b><small>أجرِ الحسابات</small></div>
+          <div><span>03</span><b>Visualize</b><small>تصور النتائج</small></div>
+          <div><span>04</span><b>Conclude</b><small>استنتج</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-content">
+      <a class="wordmark" href="../index.html">
+        <span class="wordmark-symbol">T</span>
+        <span>TAGHEER <b>TEAM</b></span>
+      </a>
+      <p>قسم الرياضيات — TAGHEER TEAM</p>
+      <a href="../index.html">العودة للرئيسية ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
