@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Matrix & Vector Simulator | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{--blue:#66BDEF;--bg:#061326;--text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#102c4b,#061326 65%);color:var(--text);font-family:'Cairo',sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#041123bb}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{background:linear-gradient(145deg,#102a48,#07172b);border:1px solid var(--line);border-radius:19px;padding:20px;margin-bottom:17px}
+.panel h2{font-size:17px;margin:0 0 15px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.matrix-box{background:#091b31;border:1px solid var(--line);padding:15px;border-radius:13px}
+.matrix-box h3{font-size:14px;margin:0 0 12px;color:var(--blue)}
+.matrix-input{display:grid;grid-template-columns:repeat(2,minmax(45px,75px));gap:9px;justify-content:center}
+.matrix-input input,.vector-input input{width:100%;min-width:0;text-align:center;background:#102d4e;color:white;border:1px solid var(--line);border-radius:8px;padding:11px;font-family:inherit;font-size:16px}
+.matrix-input input:focus,.vector-input input:focus{outline:1px solid var(--blue)}
+.vector-input{display:grid;grid-template-columns:repeat(1,minmax(45px,75px));gap:9px;justify-content:center}
+select{width:100%;background:#102d4e;color:white;border:1px solid var(--line);padding:11px;border-radius:9px;font-family:inherit}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+button{border:1px solid var(--line);background:#102d4e;color:white;padding:10px 17px;border-radius:10px;font-family:inherit;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button.primary{background:var(--blue);color:#061326}
+.result{background:#091b31;border:1px solid var(--line);padding:18px;border-radius:13px;min-height:100px}
+.result-grid{display:grid;grid-template-columns:repeat(2,65px);gap:8px;justify-content:center}
+.result-cell{padding:12px 5px;text-align:center;background:#12365a;border:1px solid var(--line);border-radius:8px;color:#8fd5ff;font-weight:700}
+.result-text{text-align:center;color:var(--blue);font-size:20px;font-weight:700;direction:ltr}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+.error{color:#ff9eaa;text-align:center;font-size:13px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}header{padding:15px 4%}.panel{padding:15px}}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Matrix & <span>Vector</span></h1>
+  <p>محاكي تفاعلي للعمليات على المصفوفات والمتجهات</p>
+ </section>
+
+ <section class="panel">
+  <h2>إدخال المصفوفات</h2>
+  <div class="grid">
+   <div class="matrix-box">
+    <h3>المصفوفة A</h3>
+    <div class="matrix-input" id="matrixA">
+     <input type="number" value="2">
+     <input type="number" value="3">
+     <input type="number" value="1">
+     <input type="number" value="4">
+    </div>
+   </div>
+   <div class="matrix-box">
+    <h3>المصفوفة B</h3>
+    <div class="matrix-input" id="matrixB">
+     <input type="number" value="1">
+     <input type="number" value="2">
+     <input type="number" value="3">
+     <input type="number" value="1">
+    </div>
+   </div>
+  </div>
+  <div class="controls">
+   <button id="clear">مسح القيم</button>
+   <button id="example">تحميل مثال</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>اختيار العملية</h2>
+  <select id="operation">
+   <option value="add">جمع A + B</option>
+   <option value="subtract">طرح A - B</option>
+   <option value="multiply">ضرب A × B</option>
+   <option value="detA">محدد المصفوفة A</option>
+   <option value="detB">محدد المصفوفة B</option>
+   <option value="transposeA">منقول المصفوفة A</option>
+   <option value="transposeB">منقول المصفوفة B</option>
+   <option value="inverseA">معكوس المصفوفة A</option>
+   <option value="inverseB">معكوس المصفوفة B</option>
+  </select>
+  <div class="controls">
+   <button class="primary" id="calculate">احسب النتيجة</button>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>النتيجة</h2>
+  <div class="result" id="result">
+   <p class="info" style="text-align:center">اختر العملية واضغط على احسب النتيجة.</p>
+  </div>
+  <p class="info" id="steps"></p>
+ </section>
+
+ <section class="panel">
+  <h2>عمليات المتجهات</h2>
+  <div class="grid">
+   <div class="matrix-box">
+    <h3>المتجه الأول U</h3>
+    <div class="vector-input" id="vectorA">
+     <input type="number" value="2">
+     <input type="number" value="3">
+     <input type="number" value="4">
+    </div>
+   </div>
+   <div class="matrix-box">
+    <h3>المتجه الثاني V</h3>
+    <div class="vector-input" id="vectorB">
+     <input type="number" value="1">
+     <input type="number" value="2">
+     <input type="number" value="3">
+    </div>
+   </div>
+  </div>
+  <div class="controls">
+   <button class="primary" id="vectorAdd">جمع المتجهات</button>
+   <button id="dotProduct">الضرب النقطي</button>
+   <button id="crossProduct">الضرب الاتجاهي</button>
+  </div>
+  <div class="result" id="vectorResult" style="margin-top:14px">
+   <p class="info" style="text-align:center">أدخل مركبات المتجهات واختر العملية.</p>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>مفاهيم رياضية</h2>
+  <div class="info">
+   <strong style="color:var(--blue)">جمع المصفوفات:</strong>
+   نجمع العناصر المتناظرة في المصفوفتين، ويشترط تساوي الأبعاد.<br>
+   <strong style="color:var(--blue)">ضرب المصفوفات:</strong>
+   عدد أعمدة المصفوفة الأولى يجب أن يساوي عدد صفوف الثانية.<br>
+   <strong style="color:var(--blue)">المحدد:</strong>
+   قيمة عددية مرتبطة بالمصفوفة المربعة.<br>
+   <strong style="color:var(--blue)">الضرب النقطي:</strong>
+   مجموع حاصل ضرب المركبات المتناظرة.<br>
+   <strong style="color:var(--blue)">الضرب الاتجاهي:</strong>
+   ينتج متجهًا عموديًا على المتجهين الأصليين في ثلاثة أبعاد.
+  </div>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Mathematics Learning</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function readMatrix(id){
+ const values=[...$(id).querySelectorAll("input")].map(x=>Number(x.value));
+ return [[values[0],values[1]],[values[2],values[3]]];
+}
+function readVector(id){
+ return [...$(id).querySelectorAll("input")].map(x=>Number(x.value));
+}
+function showMatrix(matrix){
+ $("result").innerHTML=`
+  <div class="result-grid">
+   ${matrix.flat().map(v=>`<div class="result-cell">${Number(v.toFixed(4))}</div>`).join("")}
+  </div>`;
+}
+function determinant(m){
+ return m[0][0]*m[1][1]-m[0][1]*m[1][0];
+}
+function transpose(m){
+ return [[m[0][0],m[1][0]],[m[0][1],m[1][1]]];
+}
+function inverse(m){
+ const d=determinant(m);
+ if(Math.abs(d)<1e-10)return null;
+ return [
+  [m[1][1]/d,-m[0][1]/d],
+  [-m[1][0]/d,m[0][0]/d]
+ ];
+}
+function calculate(){
+ const A=readMatrix("matrixA");
+ const B=readMatrix("matrixB");
+ const op=$("operation").value;
+ let result;
+ let explanation="";
+
+ if(op==="add"){
+  result=A.map((row,i)=>row.map((v,j)=>v+B[i][j]));
+  explanation="تم جمع كل عنصر مع العنصر المناظر له في المصفوفة الثانية.";
+ }else if(op==="subtract"){
+  result=A.map((row,i)=>row.map((v,j)=>v-B[i][j]));
+  explanation="تم طرح العناصر المتناظرة في المصفوفتين.";
+ }else if(op==="multiply"){
+  result=[
+   [A[0][0]*B[0][0]+A[0][1]*B[1][0],A[0][0]*B[0][1]+A[0][1]*B[1][1]],
+   [A[1][0]*B[0][0]+A[1][1]*B[1][0],A[1][0]*B[0][1]+A[1][1]*B[1][1]]
+  ];
+  explanation="تم حساب كل عنصر من حاصل ضرب الصف في العمود المقابل.";
+ }else if(op==="detA"||op==="detB"){
+  const M=op==="detA"?A:B;
+  const d=determinant(M);
+  $("result").innerHTML=`<div class="result-text">${d.toFixed(4)}</div>`;
+  $("steps").textContent=`المحدد = (${M[0][0]} × ${M[1][1]}) - (${M[0][1]} × ${M[1][0]}) = ${d}`;
+  return;
+ }else if(op==="transposeA"||op==="transposeB"){
+  result=transpose(op==="transposeA"?A:B);
+  explanation="تم تبديل الصفوف بالأعمدة.";
+ }else{
+  const M=op==="inverseA"?A:B;
+  result=inverse(M);
+  if(!result){
+   $("result").innerHTML='<p class="error">لا يوجد معكوس لهذه المصفوفة لأن محددها يساوي صفرًا.</p>';
+   $("steps").textContent="";
+   return;
+  }
+  explanation="تم حساب المعكوس بقسمة المصفوفة المرافقة على المحدد.";
+ }
+
+ showMatrix(result);
+ $("steps").textContent=explanation;
+}
+
+function vectorOperation(type){
+ const U=readVector("vectorA");
+ const V=readVector("vectorB");
+ let result;
+
+ if(type==="add"){
+  result=U.map((v,i)=>v+V[i]);
+  $("vectorResult").innerHTML=`<div class="result-text">(${result.join(", ")})</div>`;
+ }else if(type==="dot"){
+  result=U.reduce((sum,v,i)=>sum+v*V[i],0);
+  $("vectorResult").innerHTML=`<div class="result-text">${result}</div><p class="info">الضرب النقطي = ${U[0]}×${V[0]} + ${U[1]}×${V[1]} + ${U[2]}×${V[2]}</p>`;
+ }else{
+  result=[
+   U[1]*V[2]-U[2]*V[1],
+   U[2]*V[0]-U[0]*V[2],
+   U[0]*V[1]-U[1]*V[0]
+  ];
+  $("vectorResult").innerHTML=`<div class="result-text">(${result.join(", ")})</div>`;
+ }
+}
+
+$("calculate").addEventListener("click",calculate);
+$("vectorAdd").addEventListener("click",()=>vectorOperation("add"));
+$("dotProduct").addEventListener("click",()=>vectorOperation("dot"));
+$("crossProduct").addEventListener("click",()=>vectorOperation("cross"));
+
+$("clear").addEventListener("click",()=>{
+ ["matrixA","matrixB"].forEach(id=>{
+  $(id).querySelectorAll("input").forEach(x=>x.value=0);
+ });
+ $("result").innerHTML='<p class="info" style="text-align:center">تم مسح القيم.</p>';
+ $("steps").textContent="";
+});
+
+$("example").addEventListener("click",()=>{
+ const examples={
+  matrixA:[2,3,1,4],
+  matrixB:[1,2,3,1]
+ };
+ Object.entries(examples).forEach(([id,values])=>{
+  [...$(id).querySelectorAll("input")].forEach((x,i)=>x.value=values[i]);
+ });
+ calculate();
+});
+</script>
+</body>
+</html>
