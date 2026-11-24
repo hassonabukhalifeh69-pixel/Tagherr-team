@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#061326">
+  <meta name="description" content="قسم الفيزياء في منصة TAGHEER TEAM">
+  <title>الفيزياء | TAGHEER TEAM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <style>
+    .physics-hero {
+      padding: 100px 0 75px;
+      background:
+        radial-gradient(ellipse at 20% 45%,#4b91ff28,transparent 48%),
+        linear-gradient(135deg,#071a30,#102748);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .physics-hero h1 {
+      font-size: clamp(48px,8vw,82px);
+      line-height: 1.4;
+      margin: 22px 0;
+    }
+
+    .physics-hero p {
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 2.2;
+      font-size: 13px;
+    }
+
+    .physics-symbol {
+      position: absolute;
+      left: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 190px;
+      color: #66bdef12;
+      pointer-events: none;
+    }
+
+    .physics-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      max-width: 660px;
+      margin-top: 40px;
+    }
+
+    .physics-stat {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: #ffffff08;
+      border-radius: 10px;
+    }
+
+    .physics-stat strong {
+      display: block;
+      color: #8dc7ff;
+      font-size: 24px;
+    }
+
+    .physics-stat span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .physics-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 14px;
+    }
+
+    .physics-tool-card {
+      padding: 25px;
+      min-height: 220px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg,#142f51,#09192d);
+      transition: .25s;
+    }
+
+    .physics-tool-card:hover {
+      transform: translateY(-4px);
+      border-color: #8dc7ff88;
+    }
+
+    .physics-icon {
+      color: #8dc7ff;
+      font-size: 34px;
+    }
+
+    .physics-tool-card h3 {
+      font-size: 14px;
+      margin: 18px 0 8px;
+    }
+
+    .physics-tool-card p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 2;
+    }
+
+    .physics-status {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 11px;
+      border: 1px solid #8dc7ff55;
+      border-radius: 30px;
+      color: #a8d6ff;
+      font-size: 9px;
+    }
+
+    .physics-topics {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 13px;
+    }
+
+    .physics-topic {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #0a1d33;
+    }
+
+    .physics-topic strong {
+      display: block;
+      color: #8dc7ff;
+      margin-bottom: 10px;
+    }
+
+    .physics-topic p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 2;
+    }
+
+    @media(max-width:750px) {
+      .physics-tool-grid,
+      .physics-topics {
+        grid-template-columns: repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:500px) {
+      .physics-tool-grid,
+      .physics-topics {
+        grid-template-columns: 1fr;
+      }
+
+      .physics-symbol {
+        font-size: 110px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="../index.html">
+      <span class="wordmark-symbol">T</span>
+      <span>TAGHEER <b>TEAM</b></span>
+    </a>
+
+    <nav class="navigation">
+      <a href="../index.html">الرئيسية</a>
+      <a href="#topics">المجالات</a>
+      <a href="#simulations">المحاكاة</a>
+      <a href="../index.html#about">عن الفريق</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="physics-hero">
+      <div class="shell">
+        <span class="kicker">ACADEMIC DEPARTMENT / PHYSICS</span>
+
+        <h1>
+          اكتشف قوانين<br>
+          <span class="gradient-text">الكون.</span>
+        </h1>
+
+        <p>
+          من حركة الأجسام إلى الضوء والكهرباء والموجات،
+          استكشف المبادئ الفيزيائية التي تفسّر العالم من حولنا
+          من خلال المعرفة والنماذج والمحاكاة التفاعلية.
+        </p>
+
+        <div class="physics-stats">
+          <div class="physics-stat">
+            <strong>03</strong>
+            <span>محاكاة تفاعلية مخططة</span>
+          </div>
+          <div class="physics-stat">
+            <strong>∞</strong>
+            <span>ظواهر لاكتشافها</span>
+          </div>
+          <div class="physics-stat">
+            <strong>01</strong>
+            <span>عالم من القوانين</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="physics-symbol">∿</div>
+    </section>
+
+    <section class="section shell" id="topics">
+      <div class="section-head">
+        <div>
+          <span class="kicker">PHYSICS EXPLORER / 01</span>
+          <h2>مجالات <em>الفيزياء</em></h2>
+        </div>
+        <p>تعرّف على المفاهيم التي تساعدنا على فهم الطبيعة.</p>
+      </div>
+
+      <div class="physics-topics">
+        <article class="physics-topic">
+          <strong>01 / MECHANICS</strong>
+          <h3>الميكانيكا</h3>
+          <p>الحركة والقوى والطاقة والتفاعلات بين الأجسام.</p>
+        </article>
+
+        <article class="physics-topic">
+          <strong>02 / ELECTRICITY</strong>
+          <h3>الكهرباء والمغناطيسية</h3>
+          <p>الشحنات والمجالات والدوائر الكهربائية.</p>
+        </article>
+
+        <article class="physics-topic">
+          <strong>03 / OPTICS</strong>
+          <h3>البصريات</h3>
+          <p>الضوء والانعكاس والانكسار وتكوين الصور.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section tools-section" id="simulations">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <span class="kicker">DIGITAL PHYSICS LAB / 02</span>
+            <h2>مختبر <em>الفيزياء الرقمي</em></h2>
+          </div>
+          <p>تجارب ومحاكاة رقمية مخططة لتوضيح القوانين الفيزيائية.</p>
+        </div>
+
+        <div class="physics-tool-grid">
+          <article class="physics-tool-card">
+            <span class="physics-icon">〰</span>
+            <h3>Wave Simulator</h3>
+            <p>استكشف خصائص الموجات والتردد والطول الموجي والسعة.</p>
+            <span class="physics-status">قيد التطوير</span>
+          </article>
+
+          <article class="physics-tool-card">
+            <span class="physics-icon">ϟ</span>
+            <h3>Electric Circuit Simulator</h3>
+            <p>تعرف على مكونات الدوائر الكهربائية والعلاقات بينها.</p>
+            <span class="physics-status">قيد التطوير</span>
+          </article>
+
+          <article class="physics-tool-card">
+            <span class="physics-icon">◎</span>
+            <h3>Optics Simulator</h3>
+            <p>استكشف مسارات الضوء والعدسات والمرايا وتكوين الصور.</p>
+            <span class="physics-status">قيد التطوير</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head">
+        <div>
+          <span class="kicker">THINK IN PHYSICS / 03</span>
+          <h2>راقب الظاهرة، <em>وافهم القانون.</em></h2>
+        </div>
+      </div>
+
+      <div class="tool-showcase">
+        <div class="tool-feature">
+          <div class="feature-visual">
+            <div class="atom">
+              <i></i><i></i><i></i><b></b>
+            </div>
+          </div>
+
+          <div>
+            <span class="kicker">PHYSICS IN MOTION</span>
+            <h3>الفيزياء تتجاوز المعادلات.</h3>
+            <p>
+              نعمل على بناء تجربة تفاعلية تربط القوانين
+              بالظواهر المرئية، لتسهيل فهم العلاقات الفيزيائية.
+            </p>
+          </div>
+        </div>
+
+        <div class="tool-list">
+          <div><span>01</span><b>Observe</b><small>لاحظ الظاهرة</small></div>
+          <div><span>02</span><b>Measure</b><small>قِس المتغيرات</small></div>
+          <div><span>03</span><b>Analyze</b><small>حلّل النتائج</small></div>
+          <div><span>04</span><b>Understand</b><small>افهم القانون</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-content">
+      <a class="wordmark" href="../index.html">
+        <span class="wordmark-symbol">T</span>
+        <span>TAGHEER <b>TEAM</b></span>
+      </a>
+      <p>قسم الفيزياء — TAGHEER TEAM</p>
+      <a href="../index.html">العودة للرئيسية ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
