@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Statistics & Probability | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{--blue:#66BDEF;--bg:#061326;--text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#102c4b,#061326 65%);color:var(--text);font-family:'Cairo',sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#041123bb}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{background:linear-gradient(145deg,#102a48,#07172b);border:1px solid var(--line);border-radius:19px;padding:20px;margin-bottom:17px;box-shadow:0 15px 40px #0003}
+.panel h2{font-size:17px;margin:0 0 15px}
+textarea,input,select{width:100%;background:#102d4e;color:white;border:1px solid var(--line);padding:12px;border-radius:9px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:1px solid var(--blue)}
+button{border:1px solid var(--line);background:#102d4e;color:white;padding:10px 17px;border-radius:10px;font-family:inherit;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button.primary{background:var(--blue);color:#061326}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric{background:#091b31;border:1px solid var(--line);border-radius:13px;padding:15px;text-align:center;min-width:0}
+.metric small{color:var(--muted);font-size:12px}
+.metric strong{display:block;font-size:22px;color:var(--blue);margin:5px 0;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.control{background:#091b31;border:1px solid var(--line);padding:15px;border-radius:13px}
+.control label{display:block;font-size:13px;font-weight:700;margin-bottom:10px}
+.result{background:#091b31;border:1px solid var(--line);padding:17px;border-radius:13px;min-height:70px}
+.result-text{text-align:center;color:var(--blue);font-size:21px;font-weight:700;direction:ltr}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+.error{color:#ff9eaa;font-size:13px}
+canvas{display:block;width:100%;height:260px;background:#07172b;border:1px solid var(--line);border-radius:12px}
+.formula{direction:ltr;text-align:center;padding:14px;background:#091b31;border:1px solid var(--line);border-radius:12px;color:#c8e9ff;font-size:18px}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+@media(max-width:650px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}header{padding:15px 4%}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Statistics & <span>Probability</span></h1>
+  <p>محاكي تفاعلي لتحليل البيانات وفهم الاحتمالات</p>
+ </section>
+
+ <section class="panel">
+  <h2>أولاً: التحليل الإحصائي</h2>
+  <p class="info">أدخل مجموعة من الأرقام وافصل بينها بفاصلة أو مسافة أو سطر جديد.</p>
+  <textarea id="dataInput" dir="ltr">2, 4, 4, 6, 8, 10, 10, 10, 12</textarea>
+  <div class="controls">
+   <button class="primary" id="analyze">تحليل البيانات</button>
+   <button id="clearData">مسح البيانات</button>
+   <button id="example">مثال جديد</button>
+  </div>
+  <p id="error" class="error"></p>
+ </section>
+
+ <section class="panel">
+  <h2>النتائج الإحصائية</h2>
+  <div class="metrics">
+   <div class="metric"><small>عدد القيم</small><strong id="count">9</strong></div>
+   <div class="metric"><small>المتوسط الحسابي</small><strong id="mean">7.33</strong></div>
+   <div class="metric"><small>الوسيط</small><strong id="median">8</strong></div>
+   <div class="metric"><small>المنوال</small><strong id="mode">10</strong></div>
+   <div class="metric"><small>المدى</small><strong id="range">10</strong></div>
+   <div class="metric"><small>الانحراف المعياري</small><strong id="std">3.40</strong></div>
+   <div class="metric"><small>التباين</small><strong id="variance">11.56</strong></div>
+   <div class="metric"><small>أصغر قيمة</small><strong id="min">2</strong></div>
+   <div class="metric"><small>أكبر قيمة</small><strong id="max">12</strong></div>
+  </div>
+  <p class="info">يتم حساب التباين والانحراف المعياري للمجتمع الإحصائي (Population)، وليس للعينة.</p>
+ </section>
+
+ <section class="panel">
+  <h2>التوزيع التكراري للبيانات</h2>
+  <canvas id="chart" width="1000" height="300"></canvas>
+ </section>
+
+ <section class="panel">
+  <h2>ثانياً: حاسبة الاحتمالات</h2>
+  <div class="grid">
+   <div class="control">
+    <label>عدد النتائج الممكنة (n)</label>
+    <input id="total" type="number" min="1" max="1000000" value="6">
+   </div>
+   <div class="control">
+    <label>عدد النتائج المطلوبة (k)</label>
+    <input id="favorable" type="number" min="0" max="1000000" value="1">
+   </div>
+  </div>
+  <div class="controls">
+   <button class="primary" id="probability">احسب الاحتمال</button>
+  </div>
+  <div class="result" style="margin-top:14px">
+   <div class="result-text" id="probabilityResult">16.67%</div>
+   <p class="info" id="probabilityExplanation">احتمال الحصول على نتيجة واحدة من أصل ست نتائج متساوية الاحتمال.</p>
+  </div>
+  <div class="formula" style="margin-top:14px">P(A) = Favorable Outcomes / Total Outcomes</div>
+ </section>
+
+ <section class="panel">
+  <h2>التباديل والتوافيق</h2>
+  <div class="grid">
+   <div class="control">
+    <label>عدد العناصر (n)</label>
+    <input id="nValue" type="number" min="0" max="170" value="5">
+   </div>
+   <div class="control">
+    <label>عدد العناصر المختارة (r)</label>
+    <input id="rValue" type="number" min="0" max="170" value="2">
+   </div>
+  </div>
+  <div class="controls">
+   <button class="primary" id="permutation">التباديل nPr</button>
+   <button id="combination">التوافيق nCr</button>
+  </div>
+  <div class="result" style="margin-top:14px">
+   <div class="result-text" id="combinatoricsResult">20</div>
+   <p class="info" id="combinatoricsExplanation">عدد طرق اختيار وترتيب عنصرين من خمسة عناصر.</p>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>قوانين أساسية</h2>
+  <div class="info">
+   <strong style="color:var(--blue)">المتوسط الحسابي:</strong>
+   مجموع القيم ÷ عدد القيم.<br>
+   <strong style="color:var(--blue)">الوسيط:</strong>
+   القيمة الواقعة في منتصف البيانات بعد ترتيبها.<br>
+   <strong style="color:var(--blue)">المنوال:</strong>
+   القيمة الأكثر تكرارًا.<br>
+   <strong style="color:var(--blue)">المدى:</strong>
+   أكبر قيمة − أصغر قيمة.<br>
+   <strong style="color:var(--blue)">الاحتمال:</strong>
+   عدد النتائج المطلوبة ÷ عدد النتائج الممكنة، عند تساوي فرص النتائج.<br>
+   <strong style="color:var(--blue)">التباديل:</strong>
+   يهتم بترتيب العناصر المختارة.<br>
+   <strong style="color:var(--blue)">التوافيق:</strong>
+   لا يهتم بترتيب العناصر المختارة.
+  </div>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Mathematics Learning</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const chart=$("chart");
+const ctx=chart.getContext("2d");
+
+function parseData(){
+ const raw=$("dataInput").value.trim();
+ if(!raw)return [];
+ const parts=raw.split(/[\s,;،]+/).filter(Boolean);
+ if(parts.length>5000)throw new Error("الحد الأقصى هو 5000 قيمة.");
+ const values=parts.map(Number);
+ if(values.some(v=>!Number.isFinite(v)))throw new Error("تأكد من إدخال أرقام صحيحة.");
+ return values;
+}
+
+function fmt(n){
+ if(!Number.isFinite(n))return "—";
+ return Number(n.toFixed(4)).toString();
+}
+
+function analyze(){
+ $("error").textContent="";
+ let values;
+ try{values=parseData()}catch(e){
+  $("error").textContent=e.message;
+  return;
+ }
+ if(!values.length){
+  $("error").textContent="أدخل قيمة واحدة على الأقل.";
+  return;
+ }
+
+ const sorted=[...values].sort((a,b)=>a-b);
+ const count=values.length;
+ const sum=values.reduce((a,b)=>a+b,0);
+ const mean=sum/count;
+ const middle=Math.floor(count/2);
+ const median=count%2?sorted[middle]:(sorted[middle-1]+sorted[middle])/2;
+
+ const frequencies=new Map();
+ values.forEach(v=>frequencies.set(v,(frequencies.get(v)||0)+1));
+ const highest=Math.max(...frequencies.values());
+ const modes=highest===1?[]:[...frequencies.entries()].filter(x=>x[1]===highest).map(x=>x[0]);
+
+ const min=sorted[0];
+ const max=sorted[count-1];
+ const variance=values.reduce((s,v)=>s+(v-mean)**2,0)/count;
+ const std=Math.sqrt(variance);
+
+ $("count").textContent=count;
+ $("mean").textContent=fmt(mean);
+ $("median").textContent=fmt(median);
+ $("mode").textContent=modes.length?modes.map(fmt).join(", "):"لا يوجد";
+ $("range").textContent=fmt(max-min);
+ $("std").textContent=fmt(std);
+ $("variance").textContent=fmt(variance);
+ $("min").textContent=fmt(min);
+ $("max").textContent=fmt(max);
+
+ drawChart(values);
+}
+
+function drawChart(values){
+ const w=chart.width,h=chart.height;
+ ctx.clearRect(0,0,w,h);
+ ctx.strokeStyle="rgba(102,189,239,.1)";
+ for(let y=30;y<h;y+=40){
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+ }
+
+ const freq=new Map();
+ values.forEach(v=>freq.set(v,(freq.get(v)||0)+1));
+ const entries=[...freq.entries()].sort((a,b)=>a[0]-b[0]);
+ const maxFreq=Math.max(...entries.map(x=>x[1]));
+ const maxBars=Math.min(entries.length,30);
+ const shown=entries.slice(0,maxBars);
+ const gap=10;
+ const barWidth=Math.max(8,(w-60)/shown.length-gap);
+
+ shown.forEach(([value,count],i)=>{
+  const x=35+i*(barWidth+gap);
+  const height=(count/maxFreq)*(h-80);
+  const y=h-45-height;
+
+  ctx.fillStyle="#66BDEF";
+  ctx.fillRect(x,y,barWidth,height);
+
+  ctx.fillStyle="#edf6ff";
+  ctx.font="14px Cairo";
+  ctx.textAlign="center";
+  ctx.fillText(String(count),x+barWidth/2,y-8);
+
+  ctx.fillStyle="#9eb5ce";
+  ctx.font="12px Cairo";
+  ctx.fillText(String(value),x+barWidth/2,h-17);
+ });
+ if(entries.length>30){
+  ctx.textAlign="right";
+  ctx.fillStyle="#9eb5ce";
+  ctx.font="13px Cairo";
+  ctx.fillText("يعرض الرسم أول 30 قيمة مميزة",w-15,20);
+ }
+}
+
+function probability(){
+ const n=Number($("total").value);
+ const k=Number($("favorable").value);
+ if(!Number.isInteger(n)||!Number.isInteger(k)||n<1||k<0||k>n){
+  $("probabilityResult").textContent="—";
+  $("probabilityExplanation").textContent="أدخل عددًا صحيحًا موجبًا للنتائج الممكنة، وعددًا بين صفر و n للنتائج المطلوبة.";
+  return;
+ }
+ const p=k/n;
+ $("probabilityResult").textContent=(p*100).toFixed(4)+"%";
+ $("probabilityExplanation").textContent=
+  "الاحتمال = "+k+" ÷ "+n+" = "+p.toFixed(6)+
+  ". يفترض الحساب أن جميع النتائج متساوية الاحتمال.";
+}
+
+function factorial(n){
+ let result=1;
+ for(let i=2;i<=n;i++)result*=i;
+ return result;
+}
+
+function combinatorics(type){
+ const n=Number($("nValue").value);
+ const r=Number($("rValue").value);
+ if(!Number.isInteger(n)||!Number.isInteger(r)||n<0||n>170||r<0||r>n){
+  $("combinatoricsResult").textContent="—";
+  $("combinatoricsExplanation").textContent="تأكد أن n و r عددان صحيحان، وأن 0 ≤ r ≤ n ≤ 170.";
+  return;
+ }
+
+ let result;
+ if(type==="p"){
+  result=factorial(n)/factorial(n-r);
+  $("combinatoricsExplanation").textContent="التباديل: n! ÷ (n-r)!، حيث يؤخذ ترتيب العناصر في الاعتبار.";
+ }else{
+  result=factorial(n)/(factorial(r)*factorial(n-r));
+  $("combinatoricsExplanation").textContent="التوافيق: n! ÷ [r! × (n-r)!]، دون اعتبار ترتيب العناصر.";
+ }
+ $("combinatoricsResult").textContent=Number.isInteger(result)?String(result):result.toPrecision(8);
+}
+
+$("analyze").addEventListener("click",analyze);
+$("clearData").addEventListener("click",()=>{
+ $("dataInput").value="";
+ analyze();
+});
+$("example").addEventListener("click",()=>{
+ $("dataInput").value="5, 7, 7, 8, 9, 10, 10, 10, 12, 15";
+ analyze();
+});
+$("probability").addEventListener("click",probability);
+$("permutation").addEventListener("click",()=>combinatorics("p"));
+$("combination").addEventListener("click",()=>combinatorics("c"));
+
+analyze();
+probability();
+</script>
+</body>
+</html>
