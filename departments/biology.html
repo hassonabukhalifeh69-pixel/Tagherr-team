@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#061326">
+  <title>الأحياء | TAGHEER TEAM</title>
+  <meta name="description" content="قسم الأحياء في منصة TAGHEER TEAM">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css">
+
+  <style>
+    .bio-hero {
+      padding: 100px 0 75px;
+      background:
+        radial-gradient(ellipse at 20% 45%,#26a98525,transparent 48%),
+        linear-gradient(135deg,#071a30,#0a2d3c);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bio-hero h1 {
+      font-size: clamp(48px,8vw,82px);
+      line-height: 1.4;
+      margin: 22px 0;
+    }
+
+    .bio-hero p {
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 2.2;
+      font-size: 13px;
+    }
+
+    .bio-symbol {
+      position: absolute;
+      left: 8%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 190px;
+      color: #66bdef12;
+      pointer-events: none;
+    }
+
+    .bio-stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      max-width: 660px;
+      margin-top: 40px;
+    }
+
+    .bio-stat {
+      padding: 17px;
+      border: 1px solid var(--line);
+      background: #ffffff08;
+      border-radius: 10px;
+    }
+
+    .bio-stat strong {
+      display: block;
+      color: #75d6b2;
+      font-size: 24px;
+    }
+
+    .bio-stat span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .bio-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 16px;
+    }
+
+    .bio-tool-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg,#103a3b,#0a1d30);
+      min-height: 235px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bio-tool-card h3 {
+      margin: 18px 0 8px;
+    }
+
+    .bio-tool-card p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 2;
+      max-width: 440px;
+    }
+
+    .bio-icon {
+      color: #75d6b2;
+      font-size: 34px;
+    }
+
+    .bio-status {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 6px 11px;
+      border: 1px solid #75d6b255;
+      border-radius: 30px;
+      color: #a0e6cc;
+      font-size: 9px;
+    }
+
+    .bio-principles {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 13px;
+    }
+
+    .bio-principle {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #0a1d33;
+    }
+
+    .bio-principle strong {
+      color: #75d6b2;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .bio-principle p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 2;
+    }
+
+    @media(max-width:650px) {
+      .bio-tool-grid,
+      .bio-principles {
+        grid-template-columns: 1fr;
+      }
+
+      .bio-symbol {
+        font-size: 110px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="../index.html">
+      <span class="wordmark-symbol">T</span>
+      <span>TAGHEER <b>TEAM</b></span>
+    </a>
+
+    <nav class="navigation">
+      <a href="../index.html">الرئيسية</a>
+      <a href="#explore">استكشف الأحياء</a>
+      <a href="#simulations">المحاكاة</a>
+      <a href="../index.html#about">عن الفريق</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="bio-hero">
+      <div class="shell">
+        <span class="kicker">ACADEMIC DEPARTMENT / BIOLOGY</span>
+
+        <h1>
+          أسرار الحياة<br>
+          <span class="gradient-text">تبدأ من الخلية.</span>
+        </h1>
+
+        <p>
+          اكتشف الأنظمة الحية من المستوى الخلوي إلى الكائنات الحية،
+          وتعرّف على المفاهيم البيولوجية من خلال تجربة تعليمية
+          تجمع المعرفة والتصور والمحاكاة.
+        </p>
+
+        <div class="bio-stats">
+          <div class="bio-stat">
+            <strong>01</strong>
+            <span>عالم الخلية</span>
+          </div>
+          <div class="bio-stat">
+            <strong>02</strong>
+            <span>محاكاة تفاعلية مخططة</span>
+          </div>
+          <div class="bio-stat">
+            <strong>∞</strong>
+            <span>اكتشاف مستمر</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bio-symbol">⌬</div>
+    </section>
+
+    <section class="section shell" id="explore">
+      <div class="section-head">
+        <div>
+          <span class="kicker">BIOLOGY EXPLORER / 01</span>
+          <h2>استكشف <em>عالم الحياة</em></h2>
+        </div>
+        <p>مساحة لفهم البنية والوظيفة والعمليات الحيوية.</p>
+      </div>
+
+      <div class="bio-principles">
+        <article class="bio-principle">
+          <strong>01 / CELL</strong>
+          <h3>علم الخلية</h3>
+          <p>التعرّف على مكونات الخلية ووظائف العضيات.</p>
+        </article>
+
+        <article class="bio-principle">
+          <strong>02 / GENETICS</strong>
+          <h3>علم الوراثة</h3>
+          <p>استكشاف المفاهيم الأساسية للوراثة والمعلومات الجينية.</p>
+        </article>
+
+        <article class="bio-principle">
+          <strong>03 / LIFE SYSTEMS</strong>
+          <h3>الأنظمة الحيوية</h3>
+          <p>فهم الترابط بين مكونات الكائنات الحية ووظائفها.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section tools-section" id="simulations">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <span class="kicker">INTERACTIVE BIOLOGY / 02</span>
+            <h2>مختبر <em>الأحياء الرقمي</em></h2>
+          </div>
+          <p>محاكاة بصرية مخططة لتحويل المفاهيم إلى تجارب تعليمية.</p>
+        </div>
+
+        <div class="bio-tool-grid">
+          <article class="bio-tool-card">
+            <span class="bio-icon">⌬</span>
+            <h3>3D Cell Explorer</h3>
+            <p>
+              مستكشف ثلاثي الأبعاد للخلية، يتيح التعرف على
+              العضيات ومواقعها ووظائفها.
+            </p>
+            <span class="bio-status">قيد التطوير</span>
+          </article>
+
+          <article class="bio-tool-card">
+            <span class="bio-icon">◉</span>
+            <h3>Cell Division Simulator</h3>
+            <p>
+              محاكاة تعليمية لمراحل انقسام الخلية ومتابعة
+              التغيرات خلال المراحل المختلفة.
+            </p>
+            <span class="bio-status">قيد التطوير</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head">
+        <div>
+          <span class="kicker">LEARN THROUGH DISCOVERY / 03</span>
+          <h2>من المعلومة إلى <em>الفهم</em></h2>
+        </div>
+      </div>
+
+      <div class="tool-showcase">
+        <div class="tool-feature">
+          <div class="feature-visual">
+            <div class="atom">
+              <i></i><i></i><i></i><b></b>
+            </div>
+          </div>
+
+          <div>
+            <span class="kicker">BIOLOGY IN MOTION</span>
+            <h3>افهم ما لا تراه العين.</h3>
+            <p>
+              نهدف إلى تقديم نماذج مرئية تساعد على استكشاف
+              العمليات الحيوية وفهم العلاقات بين مكوناتها.
+            </p>
+          </div>
+        </div>
+
+        <div class="tool-list">
+          <div><span>01</span><b>Observe</b><small>لاحظ</small></div>
+          <div><span>02</span><b>Explore</b><small>استكشف</small></div>
+          <div><span>03</span><b>Understand</b><small>افهم</small></div>
+          <div><span>04</span><b>Discover</b><small>اكتشف</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-content">
+      <a class="wordmark" href="../index.html">
+        <span class="wordmark-symbol">T</span>
+        <span>TAGHEER <b>TEAM</b></span>
+      </a>
+      <p>قسم الأحياء — TAGHEER TEAM</p>
+      <a href="../index.html">العودة للرئيسية ↑</a>
+    </div>
+  </footer>
+</body>
+</html>
