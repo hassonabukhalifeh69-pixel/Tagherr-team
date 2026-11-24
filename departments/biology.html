@@ -80,6 +80,7 @@
     }
 
     .bio-tool-card {
+      display: block;
       padding: 28px;
       border: 1px solid var(--line);
       border-radius: 13px;
@@ -87,6 +88,18 @@
       min-height: 235px;
       position: relative;
       overflow: hidden;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .bio-tool-card:hover,
+    .bio-tool-card:focus-visible {
+      border-color: #75d6b299;
+      background: linear-gradient(145deg,#16494a,#0d2940);
+      transform: translateY(-4px);
+      outline: none;
     }
 
     .bio-tool-card h3 {
@@ -191,7 +204,7 @@
           </div>
           <div class="bio-stat">
             <strong>02</strong>
-            <span>محاكاة تفاعلية مخططة</span>
+            <span>محاكاة تفاعلية</span>
           </div>
           <div class="bio-stat">
             <strong>∞</strong>
@@ -240,29 +253,31 @@
             <span class="kicker">INTERACTIVE BIOLOGY / 02</span>
             <h2>مختبر <em>الأحياء الرقمي</em></h2>
           </div>
-          <p>محاكاة بصرية مخططة لتحويل المفاهيم إلى تجارب تعليمية.</p>
+          <p>اختر محاكاتك التفاعلية وابدأ استكشاف عالم الأحياء.</p>
         </div>
 
         <div class="bio-tool-grid">
-          <article class="bio-tool-card">
+
+          <a class="bio-tool-card" href="../tools/cell-explorer.html">
             <span class="bio-icon">⌬</span>
             <h3>3D Cell Explorer</h3>
             <p>
               مستكشف ثلاثي الأبعاد للخلية، يتيح التعرف على
               العضيات ومواقعها ووظائفها.
             </p>
-            <span class="bio-status">قيد التطوير</span>
-          </article>
+            <span class="bio-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="bio-tool-card">
+          <a class="bio-tool-card" href="../tools/cell-division.html">
             <span class="bio-icon">◉</span>
             <h3>Cell Division Simulator</h3>
             <p>
               محاكاة تعليمية لمراحل انقسام الخلية ومتابعة
               التغيرات خلال المراحل المختلفة.
             </p>
-            <span class="bio-status">قيد التطوير</span>
-          </article>
+            <span class="bio-status">افتح المحاكي ↗</span>
+          </a>
+
         </div>
       </div>
     </section>
