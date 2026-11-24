@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Optics Simulator | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{--blue:#66BDEF;--bg:#061326;--panel:#0c203b;--text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#102c4b,var(--bg) 65%);color:var(--text);font-family:'Cairo',sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#041123bb}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{background:linear-gradient(145deg,#102a48,#07172b);border:1px solid var(--line);border-radius:19px;padding:20px;margin-bottom:17px;box-shadow:0 15px 40px #0003}
+.panel h2{font-size:17px;margin:0 0 15px}
+canvas{width:100%;height:340px;display:block;background:#07172b;border:1px solid var(--line);border-radius:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.control{background:#091b31;border:1px solid var(--line);padding:15px;border-radius:13px}
+.control label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:12px}
+output{color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+select{width:100%;background:#102d4e;color:white;border:1px solid var(--line);padding:11px;border-radius:9px;font-family:inherit}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric{background:#091b31;border:1px solid var(--line);border-radius:13px;padding:16px;text-align:center}
+.metric small{color:var(--muted);font-size:12px}
+.metric strong{display:block;font-size:23px;color:var(--blue);margin:5px 0}
+.formula{direction:ltr;text-align:center;padding:15px;background:#091b31;border:1px solid var(--line);border-radius:12px;font-size:20px;color:#c8e9ff}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+button{border:1px solid var(--line);background:#102d4e;color:white;padding:10px 17px;border-radius:10px;font-family:inherit;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button.primary{background:var(--blue);color:#061326}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:650px){.grid,.metrics{grid-template-columns:1fr}header{padding:15px 4%}canvas{height:280px}.panel{padding:15px}}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Optics <span>Simulator</span></h1>
+  <p>محاكي تفاعلي لانعكاس الضوء وانكساره وتكوّن الصور بالعدسات</p>
+ </section>
+
+ <section class="panel">
+  <h2>المحاكاة البصرية</h2>
+  <canvas id="opticsCanvas" width="1000" height="500"></canvas>
+  <div class="controls">
+   <button class="primary" id="reset">↺ إعادة الضبط</button>
+  </div>
+  <p class="info">يمثل الرسم مسارًا تعليميًا مبسطًا للأشعة الضوئية. غيّر نوع العدسة وبعد الجسم والبعد البؤري لملاحظة تغيّر الصورة.</p>
+ </section>
+
+ <section class="panel">
+  <h2>إعدادات التجربة</h2>
+  <div class="grid">
+   <div class="control">
+    <label>نوع التجربة</label>
+    <select id="mode">
+     <option value="convex">عدسة محدبة</option>
+     <option value="concave">عدسة مقعرة</option>
+     <option value="mirror">مرآة مقعرة</option>
+    </select>
+   </div>
+   <div class="control">
+    <label>بعد الجسم (dₒ) <output id="objectValue">30 cm</output></label>
+    <input id="objectDistance" type="range" min="12" max="80" value="30">
+   </div>
+   <div class="control">
+    <label>البعد البؤري (f) <output id="focalValue">15 cm</output></label>
+    <input id="focalLength" type="range" min="8" max="30" value="15">
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>نتائج تكوّن الصورة</h2>
+  <div class="metrics">
+   <div class="metric">
+    <small>بعد الصورة (dᵢ)</small>
+    <strong id="imageDistance">30.0 cm</strong>
+   </div>
+   <div class="metric">
+    <small>التكبير (m)</small>
+    <strong id="magnification">-1.00</strong>
+   </div>
+   <div class="metric">
+    <small>طبيعة الصورة</small>
+    <strong id="imageNature" style="font-size:17px">حقيقية مقلوبة</strong>
+   </div>
+  </div>
+  <div class="formula" style="margin-top:17px">
+   1/f = 1/dₒ + 1/dᵢ
+  </div>
+  <p class="info" id="explanation"></p>
+ </section>
+
+ <section class="panel">
+  <h2>مفاهيم أساسية</h2>
+  <div class="info">
+   <strong style="color:var(--blue)">العدسة المحدبة:</strong>
+   تجمع الأشعة المتوازية في بؤرة حقيقية.<br>
+   <strong style="color:var(--blue)">العدسة المقعرة:</strong>
+   تفرق الأشعة، وتكون بؤرتها افتراضية.<br>
+   <strong style="color:var(--blue)">البعد البؤري:</strong>
+   المسافة بين المركز البصري والبؤرة.<br>
+   <strong style="color:var(--blue)">التكبير:</strong>
+   نسبة ارتفاع الصورة إلى ارتفاع الجسم.
+  </div>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Physics Learning</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const canvas=$("opticsCanvas");
+const ctx=canvas.getContext("2d");
+
+function calculate(){
+ const mode=$("mode").value;
+ const do_=Number($("objectDistance").value);
+ const focal=Number($("focalLength").value);
+ const f=mode==="concave"?-focal:focal;
+
+ const denominator=(1/f)-(1/do_);
+ const di=Math.abs(denominator)<0.00001?Infinity:1/denominator;
+ const m=Number.isFinite(di)?-di/do_:Infinity;
+
+ $("objectValue").textContent=do_+" cm";
+ $("focalValue").textContent=focal+" cm";
+
+ let nature="";
+ if(!Number.isFinite(di)){
+  nature="عند اللانهاية";
+ }else if(mode==="concave"){
+  nature="افتراضية معتدلة";
+ }else if(di>0){
+  nature=m<0?"حقيقية مقلوبة":"حقيقية معتدلة";
+ }else{
+  nature="افتراضية معتدلة";
+ }
+
+ $("imageDistance").textContent=Number.isFinite(di)?di.toFixed(1)+" cm":"∞";
+ $("magnification").textContent=Number.isFinite(m)?m.toFixed(2):"∞";
+ $("imageNature").textContent=nature;
+
+ let explanation="";
+ if(mode==="concave"){
+  explanation="في العدسة المقعرة تكون الصورة افتراضية ومعتدلة ومصغرة للأجسام الحقيقية، وتقع على جهة الجسم.";
+ }else if(mode==="mirror"){
+  explanation="في المرآة المقعرة تتكوّن الصورة وفق معادلة المرايا. عندما يكون الجسم خارج البؤرة تكون الصورة حقيقية ومقلوبة، وعندما يكون داخلها تكون افتراضية ومعتدلة.";
+ }else if(!Number.isFinite(di)){
+  explanation="الجسم عند البؤرة تقريبًا، لذلك تخرج الأشعة متوازية وتتكون الصورة عند مسافة كبيرة جدًا.";
+ }else if(di>0){
+  explanation="تتكوّن صورة حقيقية على الجهة المقابلة للجسم، وتكون مقلوبة. يحدد مقدار التكبير ما إذا كانت مكبرة أو مصغرة.";
+ }else{
+  explanation="الجسم يقع بين العدسة والبؤرة، لذلك تتكوّن صورة افتراضية معتدلة ومكبرة على جهة الجسم.";
+ }
+
+ $("explanation").textContent=explanation;
+ draw(mode,do_,focal,di,m);
+}
+
+function draw(mode,do_,focal,di,m){
+ const w=canvas.width,h=canvas.height;
+ ctx.clearRect(0,0,w,h);
+
+ // شبكة الخلفية
+ ctx.strokeStyle="rgba(102,189,239,.09)";
+ ctx.lineWidth=1;
+ for(let x=0;x<w;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+ for(let y=0;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
+
+ const axis=260;
+ const center=500;
+ const scale=4;
+ const objectX=center-do_*scale;
+ const imageX=Number.isFinite(di)?center+di*scale:center+350;
+ const objectHeight=90;
+ const imageHeight=Number.isFinite(m)?Math.max(-180,Math.min(180,m*objectHeight)):0;
+
+ // المحور الرئيسي
+ ctx.strokeStyle="#9eb5ce";
+ ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(30,axis);ctx.lineTo(970,axis);ctx.stroke();
+
+ // العدسة أو المرآة
+ ctx.strokeStyle="#66bdef";
+ ctx.lineWidth=6;
+ ctx.beginPath();
+ if(mode==="mirror"){
+  ctx.moveTo(center,70);ctx.quadraticCurveTo(center+65,axis,center,450);
+ }else{
+  ctx.moveTo(center,65);
+  ctx.bezierCurveTo(center-50,150,center-50,370,center,455);
+  ctx.bezierCurveTo(center+50,370,center+50,150,center,65);
+ }
+ ctx.stroke();
+
+ // البؤرتان
+ ctx.fillStyle="#f7c96a";
+ [-1,1].forEach(sign=>{
+  ctx.beginPath();
+  ctx.arc(center+sign*focal*scale,axis,7,0,Math.PI*2);
+  ctx.fill();
+ });
+ ctx.fillStyle="#f7c96a";
+ ctx.font="bold 18px Cairo";
+ ctx.fillText("F",center-focal*scale-8,axis+28);
+ ctx.fillText("F",center+focal*scale-8,axis+28);
+
+ // الجسم
+ ctx.strokeStyle="#66d9ff";
+ ctx.lineWidth=5;
+ ctx.beginPath();ctx.moveTo(objectX,axis);ctx.lineTo(objectX,axis-objectHeight);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(objectX-9,axis-objectHeight+15);ctx.lineTo(objectX,axis-objectHeight);ctx.lineTo(objectX+9,axis-objectHeight+15);ctx.stroke();
+ ctx.fillStyle="#66d9ff";
+ ctx.font="16px Cairo";
+ ctx.fillText("الجسم",objectX-22,axis+30);
+
+ // الصورة
+ if(Number.isFinite(imageX)&&Math.abs(imageX-center)<450&&Number.isFinite(imageHeight)){
+  ctx.strokeStyle=di<0?"#f3b5ff":"#f7c96a";
+  ctx.lineWidth=4;
+  ctx.setLineDash(di<0?[9,7]:[]);
+  ctx.beginPath();
+  ctx.moveTo(imageX,axis);
+  ctx.lineTo(imageX,axis-imageHeight);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=di<0?"#f3b5ff":"#f7c96a";
+  ctx.fillText("الصورة",imageX-28,axis+28);
+ }
+
+ // أشعة رئيسية توضيحية
+ const rayY=axis-objectHeight;
+ ctx.strokeStyle="#66d9ff";
+ ctx.lineWidth=2;
+ ctx.setLineDash([7,5]);
+
+ ctx.beginPath();
+ ctx.moveTo(objectX,rayY);
+ ctx.lineTo(center,rayY);
+ if(mode==="concave"){
+  ctx.lineTo(940,rayY-110);
+ }else{
+  ctx.lineTo(940,axis+70);
+ }
+ ctx.stroke();
+
+ ctx.beginPath();
+ ctx.moveTo(objectX,rayY);
+ ctx.lineTo(center,axis);
+ ctx.lineTo(940,axis+100);
+ ctx.stroke();
+
+ ctx.setLineDash([]);
+ ctx.fillStyle="#9eb5ce";
+ ctx.font="14px Cairo";
+ ctx.fillText(mode==="mirror"?"مرآة مقعرة":mode==="concave"?"عدسة مقعرة":"عدسة محدبة",center+25,55);
+ ctx.fillText("المحور الرئيسي",40,axis-12);
+}
+
+["mode","objectDistance","focalLength"].forEach(id=>{
+ $(id).addEventListener("input",calculate);
+ $(id).addEventListener("change",calculate);
+});
+
+$("reset").addEventListener("click",()=>{
+ $("mode").value="convex";
+ $("objectDistance").value=30;
+ $("focalLength").value=15;
+ calculate();
+});
+
+calculate();
+</script>
+</body>
+</html>
