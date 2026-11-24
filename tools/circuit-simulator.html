@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Electric Circuit Simulator | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{--blue:#66BDEF;--bg:#061326;--panel:#0c203b;--text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#102c4b,var(--bg) 65%);color:var(--text);font-family:'Cairo',sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#041123bb}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{background:linear-gradient(145deg,#102a48,#07172b);border:1px solid var(--line);border-radius:19px;padding:20px;margin-bottom:17px;box-shadow:0 15px 40px #0003}
+.panel h2{font-size:17px;margin:0 0 15px}
+svg{display:block;width:100%;height:auto;min-height:230px;background:#07172b;border:1px solid var(--line);border-radius:13px}
+.wire{fill:none;stroke:#7896b4;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.wire.active{stroke:#66d9ff;filter:drop-shadow(0 0 5px #66bdef)}
+.component{stroke:#d9edff;stroke-width:4;fill:#102d4e;stroke-linecap:round}
+.label{fill:#dcecff;font-family:Cairo,sans-serif;font-size:17px}
+.small-label{fill:#9eb5ce;font-family:Cairo,sans-serif;font-size:13px}
+.electron{fill:#66d9ff;filter:drop-shadow(0 0 5px #66d9ff)}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+button{border:1px solid var(--line);background:#102d4e;color:white;padding:10px 17px;border-radius:10px;font-family:inherit;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button.primary{background:var(--blue);color:#061326}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.control-card{background:#091b31;border:1px solid var(--line);padding:16px;border-radius:13px}
+.control-card label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:12px}
+output{color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric{background:#091b31;border:1px solid var(--line);border-radius:13px;padding:16px;text-align:center}
+.metric small{color:var(--muted);font-size:12px}
+.metric strong{display:block;font-size:25px;color:var(--blue);margin:5px 0}
+.status{display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;background:#26374b;color:#c7d5e5}
+.status.on{background:#124936;color:#8df2bd}
+.formula{direction:ltr;text-align:center;padding:15px;background:#091b31;border:1px solid var(--line);border-radius:12px;font-size:20px;color:#c8e9ff}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+@media(max-width:650px){.grid,.metrics{grid-template-columns:1fr}header{padding:15px 4%}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Electric Circuit <span>Simulator</span></h1>
+  <p>محاكي تفاعلي لفهم الدوائر الكهربائية وقانون أوم</p>
+ </section>
+
+ <section class="panel">
+  <h2>الدائرة الكهربائية</h2>
+  <svg viewBox="0 0 700 330" role="img" aria-label="دائرة كهربائية تتكون من بطارية ومقاومة ومفتاح">
+   <path id="wireTop" class="wire" d="M150 70 H300"/>
+   <path id="wireRightTop" class="wire" d="M300 70 H470"/>
+   <path id="wireRight" class="wire" d="M470 70 V260"/>
+   <path id="wireBottom" class="wire" d="M470 260 H150"/>
+   <path id="wireLeft" class="wire" d="M150 260 V70"/>
+   <g>
+    <path class="component" d="M150 135 V185 M132 145 V175"/>
+    <text class="label" x="105" y="120">البطارية</text>
+    <text class="small-label" x="105" y="205" id="batteryLabel">12 V</text>
+   </g>
+   <g>
+    <path class="component" d="M300 70 V115 L285 125 L315 140 L285 155 L315 170 L285 185 L315 200 L300 210 V260"/>
+    <text class="label" x="335" y="155">المقاومة</text>
+    <text class="small-label" x="335" y="180" id="resistorLabel">6 Ω</text>
+   </g>
+   <g>
+    <circle cx="470" cy="135" r="5" fill="#d9edff"/>
+    <circle cx="470" cy="190" r="5" fill="#d9edff"/>
+    <path id="switchBlade" class="component" d="M470 135 L470 190" />
+    <text class="label" x="510" y="165">المفتاح</text>
+   </g>
+   <g id="electrons"></g>
+   <text class="small-label" x="350" y="300" text-anchor="middle" id="circuitLabel">الدائرة مغلقة</text>
+  </svg>
+  <div class="controls">
+   <button class="primary" id="toggle">إطفاء الدائرة</button>
+   <button id="reset">↺ إعادة الضبط</button>
+  </div>
+  <p class="info">هذا نموذج مبسط لدائرة توالٍ تحتوي على مصدر جهد ومقاومة ومفتاح. عند فتح المفتاح يتوقف التيار الكهربائي.</p>
+ </section>
+
+ <section class="panel">
+  <h2>التحكم في مكونات الدائرة</h2>
+  <div class="grid">
+   <div class="control-card">
+    <label>جهد البطارية (V) <output id="voltageValue">12 V</output></label>
+    <input id="voltage" type="range" min="1" max="24" value="12">
+   </div>
+   <div class="control-card">
+    <label>المقاومة (R) <output id="resistanceValue">6 Ω</output></label>
+    <input id="resistance" type="range" min="1" max="50" value="6">
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>النتائج الكهربائية</h2>
+  <div class="metrics">
+   <div class="metric">
+    <small>شدة التيار (I)</small>
+    <strong id="current">2.00 A</strong>
+    <small>أمبير</small>
+   </div>
+   <div class="metric">
+    <small>القدرة الكهربائية (P)</small>
+    <strong id="power">24.00 W</strong>
+    <small>واط</small>
+   </div>
+   <div class="metric">
+    <small>حالة الدائرة</small>
+    <strong style="font-size:18px"><span class="status on" id="status">تعمل</span></strong>
+    <small id="statusDetail">التيار يمر في الدائرة</small>
+   </div>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>قانون أوم</h2>
+  <div class="formula">V = I × R &nbsp; | &nbsp; I = V / R</div>
+  <p class="info">
+   V: فرق الجهد الكهربائي ويقاس بالفولت.<br>
+   I: شدة التيار الكهربائي وتقاس بالأمبير.<br>
+   R: المقاومة الكهربائية وتقاس بالأوم.<br>
+   P: القدرة الكهربائية وتحسب من العلاقة P = V × I.
+  </p>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Physics Learning</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let isOn=true;
+let animationFrame=0;
+let lastTime=0;
+let electronPosition=0;
+
+function update(){
+ const V=Number($("voltage").value);
+ const R=Number($("resistance").value);
+ const I=isOn?V/R:0;
+ const P=isOn?V*I:0;
+
+ $("voltageValue").textContent=V+" V";
+ $("resistanceValue").textContent=R+" Ω";
+ $("batteryLabel").textContent=V+" V";
+ $("resistorLabel").textContent=R+" Ω";
+ $("current").textContent=I.toFixed(2)+" A";
+ $("power").textContent=P.toFixed(2)+" W";
+
+ $("status").textContent=isOn?"تعمل":"متوقفة";
+ $("status").className="status "+(isOn?"on":"");
+ $("statusDetail").textContent=isOn?"التيار يمر في الدائرة":"لا يوجد تيار";
+ $("toggle").textContent=isOn?"إطفاء الدائرة":"تشغيل الدائرة";
+ $("circuitLabel").textContent=isOn?"الدائرة مغلقة":"الدائرة مفتوحة";
+
+ $("switchBlade").setAttribute("d",isOn?
+  "M470 135 L470 190":"M470 135 L520 105");
+
+ document.querySelectorAll(".wire").forEach(w=>{
+  w.classList.toggle("active",isOn);
+ });
+
+ drawElectrons();
+}
+
+function drawElectrons(){
+ const group=$("electrons");
+ group.innerHTML="";
+ if(!isOn)return;
+
+ const points=[
+  [150,70],[220,70],[290,70],[300,120],
+  [300,220],[370,260],[440,260],[150,220],
+  [150,150]
+ ];
+ points.forEach((p,i)=>{
+  const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  c.setAttribute("cx",p[0]);
+  c.setAttribute("cy",p[1]);
+  c.setAttribute("r","4");
+  c.setAttribute("class","electron");
+  c.style.opacity=.45+(i%3)*.2;
+  group.appendChild(c);
+ });
+}
+
+$("toggle").addEventListener("click",()=>{
+ isOn=!isOn;
+ update();
+});
+$("reset").addEventListener("click",()=>{
+ $("voltage").value=12;
+ $("resistance").value=6;
+ isOn=true;
+ update();
+});
+["voltage","resistance"].forEach(id=>{
+ $(id).addEventListener("input",update);
+});
+
+update();
+</script>
+</body>
+</html>
