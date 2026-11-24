@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#061326">
+<title>pH Simulator | TAGHEER TEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#061326;--panel:#0c1e34;--blue:#66bdef;
+ --text:#f3f8ff;--muted:#91a8bf;--line:#ffffff18;
+ --green:#54d6a0;--red:#ff7777;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Alexandria',sans-serif}
+button,input,select{font-family:inherit}
+.topbar{
+ height:70px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 5%;
+ background:#071629;border-bottom:1px solid var(--line)
+}
+.brand{font-size:14px;font-weight:800;letter-spacing:1px}
+.brand span{color:var(--blue)}
+.back{font-size:10px;color:var(--muted);text-decoration:none}
+.hero{
+ padding:48px 5% 35px;
+ background:radial-gradient(ellipse at 20% 0%,#1682bd25,transparent 55%)
+}
+.kicker{font-size:10px;letter-spacing:2px;color:var(--blue)}
+h1{font-size:clamp(28px,5vw,46px);margin:14px 0}
+.hero p{font-size:12px;color:var(--muted);line-height:2}
+.container{max-width:1100px;margin:auto;padding:25px 5% 65px}
+.formula{
+ direction:ltr;text-align:center;padding:22px;
+ background:linear-gradient(120deg,#102b47,#142b40);
+ border:1px solid #66bdef44;border-radius:13px;margin-bottom:18px
+}
+.formula strong{font-family:Georgia,serif;font-size:34px;color:var(--blue)}
+.formula p{font-size:9px;color:var(--muted);margin-top:8px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.panel h2{font-size:14px;margin-bottom:8px}
+.desc{font-size:10px;color:var(--muted);line-height:2;margin-bottom:18px}
+label{display:block;font-size:10px;color:var(--muted);margin-bottom:8px}
+select,input[type=number]{
+ width:100%;padding:12px;background:#061326;color:white;
+ border:1px solid var(--line);border-radius:8px;outline:none;font-size:11px
+}
+select:focus,input:focus{border-color:var(--blue)}
+.field{margin-bottom:15px}
+.range-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.range-head strong{color:var(--blue);font-size:12px;direction:ltr}
+input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer;margin:13px 0}
+.range-limits{display:flex;justify-content:space-between;direction:ltr;color:var(--muted);font-size:9px}
+.actions{display:flex;gap:9px;margin-top:18px}
+.btn{padding:12px 16px;border:0;border-radius:8px;font-size:10px;cursor:pointer}
+.primary{background:var(--blue);color:#061326;font-weight:700;flex:1}
+.secondary{background:#ffffff10;color:white;border:1px solid var(--line)}
+.error{
+ display:none;margin-top:13px;padding:12px;border-radius:8px;
+ background:#ff777714;border:1px solid #ff777744;
+ color:#ff9999;font-size:10px;line-height:1.8
+}
+.result{text-align:center}
+.ph-number{
+ direction:ltr;font-size:clamp(55px,9vw,76px);
+ font-weight:800;padding:18px 0 5px;color:#66bdef
+}
+.ph-label{font-size:10px;color:var(--muted)}
+.classification{
+ display:inline-block;margin:15px 0;padding:8px 15px;
+ border-radius:30px;background:#ffffff10;font-size:10px
+}
+.indicator{
+ height:17px;border-radius:20px;direction:ltr;
+ background:linear-gradient(90deg,
+ #e9363e 0%,#f08035 15%,#f4d64a 30%,
+ #80cb61 45%,#36bda3 55%,#3688d6 70%,
+ #6655c7 85%,#9a49ae 100%);
+ margin:20px 0 8px;position:relative
+}
+.pointer{
+ position:absolute;top:-6px;width:5px;height:29px;
+ border-radius:5px;background:white;border:1px solid #061326;
+ transform:translateX(-50%);box-shadow:0 0 8px #000
+}
+.indicator-labels{display:flex;justify-content:space-between;direction:ltr;color:var(--muted);font-size:9px}
+.sample{
+ width:110px;height:110px;border-radius:50%;margin:22px auto;
+ border:5px solid #ffffff22;box-shadow:0 0 35px #66bdef22;
+ transition:background .25s
+}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;text-align:right}
+.summary div{padding:12px;background:#ffffff08;border-radius:8px}
+.summary small{display:block;color:var(--muted);font-size:9px}
+.summary strong{display:block;font-size:12px;margin-top:5px;direction:ltr;text-align:right}
+.steps{margin-top:22px;text-align:right}
+.steps h3{font-size:12px;margin-bottom:10px}
+.step{padding:12px 0;border-bottom:1px solid var(--line);font-size:10px;color:var(--muted);line-height:2}
+.step b{color:white}
+.note{
+ margin-top:18px;padding:14px;border-radius:9px;
+ background:#66bdef0c;border:1px solid #66bdef25;
+ color:var(--muted);font-size:9px;line-height:2
+}
+.examples{margin-top:17px}
+.examples p{font-size:10px;color:var(--muted);margin-bottom:9px}
+.example-list{display:flex;gap:8px;flex-wrap:wrap}
+.example{
+ padding:8px 11px;border-radius:7px;background:#ffffff09;
+ color:var(--blue);border:1px solid var(--line);font-size:9px;cursor:pointer
+}
+footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:750px){.layout{grid-template-columns:1fr}.panel{padding:18px}}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+ <a class="brand" href="../index.html">TAGHEER <span>TEAM</span></a>
+ <a class="back" href="../index.html">← العودة للرئيسية</a>
+</header>
+
+<section class="hero">
+ <span class="kicker">CHEMISTRY LAB / TOOL 06</span>
+ <h1>pH <span style="color:#66bdef">Simulator.</span></h1>
+ <p>
+  استكشف الأحماض والقواعد، وتعرّف على تأثير تركيز الأيونات
+  في الرقم الهيدروجيني للمحاليل.
+ </p>
+</section>
+
+<main class="container">
+
+ <div class="formula">
+  <strong>pH = −log₁₀[H⁺]</strong>
+  <p>HYDROGEN ION CONCENTRATION · ACIDITY SCALE</p>
+ </div>
+
+ <div class="layout">
+  <section class="panel">
+   <h2>إعداد المحلول</h2>
+   <p class="desc">اختر نوع المحلول وتركيزه، ثم احسب قيمة الرقم الهيدروجيني.</p>
+
+   <div class="field">
+    <label for="solution">نوع المحلول</label>
+    <select id="solution">
+     <option value="HCl">Hydrochloric Acid — HCl</option>
+     <option value="HNO3">Nitric Acid — HNO₃</option>
+     <option value="NaOH">Sodium Hydroxide — NaOH</option>
+     <option value="KOH">Potassium Hydroxide — KOH</option>
+     <option value="custom">إدخال تركيز H⁺ مباشرة</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <div class="range-head">
+     <label for="concentration">التركيز المولي (mol/L)</label>
+     <strong id="concentrationValue">0.010 M</strong>
+    </div>
+    <input id="concentration" type="range" min="-7" max="0" step="0.1" value="-2">
+    <div class="range-limits">
+     <span>10⁻⁷ M</span><span>1 M</span>
+    </div>
+   </div>
+
+   <div class="field">
+    <label for="direct">أو أدخل التركيز مباشرة</label>
+    <input id="direct" type="number" min="0.0000001" max="1" step="any" placeholder="مثال: 0.01">
+   </div>
+
+   <div class="actions">
+    <button class="btn primary" id="calculate">احسب قيمة pH ←</button>
+    <button class="btn secondary" id="reset">إعادة ضبط</button>
+   </div>
+
+   <div class="error" id="error"></div>
+
+   <div class="examples">
+    <p>تجارب سريعة:</p>
+    <div class="example-list">
+     <button class="example" data-type="HCl" data-value="0.1">HCl 0.1 M</button>
+     <button class="example" data-type="HCl" data-value="0.01">HCl 0.01 M</button>
+     <button class="example" data-type="NaOH" data-value="0.1">NaOH 0.1 M</button>
+     <button class="example" data-type="NaOH" data-value="0.001">NaOH 0.001 M</button>
+    </div>
+   </div>
+
+   <div class="note">
+    <b style="color:#66bdef">تنبيه علمي:</b>
+    الحساب هنا يفترض أحماضًا وقواعد قوية أحادية التكافؤ
+    تتأين بالكامل، ويستخدم تقريب التركيز بدل النشاط الكيميائي.
+   </div>
+  </section>
+
+  <section class="panel result">
+   <h2>نتيجة المحاكاة</h2>
+   <p class="desc">PH ANALYSIS · SOLUTION INDICATOR</p>
+
+   <div class="ph-number" id="phValue">2.00</div>
+   <div class="ph-label">POWER OF HYDROGEN</div>
+   <div class="classification" id="classification">محلول حمضي</div>
+
+   <div class="indicator">
+    <div class="pointer" id="pointer"></div>
+   </div>
+   <div class="indicator-labels">
+    <span>0 · Acidic</span><span>7 · Neutral</span><span>14 · Basic</span>
+   </div>
+
+   <div class="sample" id="sample"></div>
+
+   <div class="summary">
+    <div><small>pH</small><strong id="summaryPH">2.00</strong></div>
+    <div><small>pOH</small><strong id="summaryPOH">12.00</strong></div>
+    <div><small>[H⁺]</small><strong id="summaryH">0.01 M</strong></div>
+    <div><small>[OH⁻]</small><strong id="summaryOH">1.0e-12 M</strong></div>
+   </div>
+
+   <div class="steps">
+    <h3>خطوات الحساب</h3>
+    <div id="steps"></div>
+   </div>
+  </section>
+ </div>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Chemistry Tools</footer>
+
+<script>
+const solution=document.getElementById("solution");
+const concentration=document.getElementById("concentration");
+const direct=document.getElementById("direct");
+
+const colors=[
+ "#e83e45","#ed633b","#f08e39","#eeb94a",
+ "#d4ce4b","#a5ce54","#65c77c","#43c3a0",
+ "#39b4c7","#3996cf","#4a78ce","#665bc6",
+ "#8151b9","#9b4da7","#b14b99"
+];
+
+function getConcentration(){
+ const value=direct.value.trim()!==""?
+  Number(direct.value):
+  Math.pow(10,Number(concentration.value));
+
+ if(!Number.isFinite(value)||value<=0||value>1){
+  throw new Error("أدخل تركيزًا أكبر من صفر ولا يتجاوز 1 mol/L.");
+ }
+ return value;
+}
+
+function calculate(){
+ const error=document.getElementById("error");
+ error.style.display="none";
+
+ try{
+  const type=solution.value;
+  const c=getConcentration();
+  let H,OH,explanation;
+
+  if(type==="custom"){
+   H=c;
+   OH=1e-14/H;
+   explanation="تم اعتبار القيمة المدخلة هي تركيز أيونات الهيدروجين [H⁺] مباشرة.";
+  }else if(type==="HCl"||type==="HNO3"){
+   H=c;
+   OH=1e-14/H;
+   explanation=`حمض قوي أحادي التكافؤ: [H⁺] ≈ ${c} M.`;
+  }else{
+   OH=c;
+   H=1e-14/OH;
+   explanation=`قاعدة قوية أحادية التكافؤ: [OH⁻] ≈ ${c} M.`;
+  }
+
+  const pH=-Math.log10(H);
+  const pOH=-Math.log10(OH);
+
+  let category;
+  if(Math.abs(pH-7)<1e-10){
+   category="محلول متعادل";
+  }else if(pH<7){
+   category="محلول حمضي";
+  }else{
+   category="محلول قاعدي";
+  }
+
+  const colorIndex=Math.max(0,Math.min(14,Math.round(pH)));
+  const color=colors[colorIndex];
+
+  document.getElementById("phValue").textContent=pH.toFixed(2);
+  document.getElementById("classification").textContent=category;
+  document.getElementById("classification").style.color=color;
+  document.getElementById("pointer").style.left=(pH/14*100)+"%";
+  document.getElementById("sample").style.background=color;
+  document.getElementById("sample").style.boxShadow=`0 0 35px ${color}66`;
+
+  document.getElementById("summaryPH").textContent=pH.toFixed(3);
+  document.getElementById("summaryPOH").textContent=pOH.toFixed(3);
+  document.getElementById("summaryH").textContent=H.toExponential(3)+" M";
+  document.getElementById("summaryOH").textContent=OH.toExponential(3)+" M";
+
+  const steps=[
+   `<b>1. تحديد نوع المحلول:</b> ${type==="custom"?"تركيز أيونات الهيدروجين مباشرة":type}.`,
+   `<b>2. العلاقة المستخدمة:</b> pH = −log₁₀[H⁺].`,
+   `<b>3. تحديد التركيز:</b> ${explanation}`,
+   `<b>4. الحساب:</b> pH = −log₁₀(${H.toExponential(3)}) = ${pH.toFixed(3)}.`,
+   `<b>5. النتيجة:</b> pH = ${pH.toFixed(3)} · ${category}.`
+  ];
+
+  document.getElementById("steps").innerHTML=
+   steps.map(x=>`<div class="step">${x}</div>`).join("");
+
+ }catch(e){
+  error.textContent=e.message;
+  error.style.display="block";
+ }
+}
+
+function syncConcentration(){
+ const value=Math.pow(10,Number(concentration.value));
+ document.getElementById("concentrationValue").textContent=
+  value.toExponential(2)+" M";
+ direct.value="";
+}
+
+solution.addEventListener("change",()=>{
+ direct.value="";
+});
+
+concentration.addEventListener("input",syncConcentration);
+document.getElementById("calculate").addEventListener("click",calculate);
+
+document.getElementById("reset").addEventListener("click",()=>{
+ solution.value="HCl";
+ concentration.value="-2";
+ syncConcentration();
+ direct.value="";
+ calculate();
+});
+
+document.querySelectorAll(".example").forEach(button=>{
+ button.addEventListener("click",()=>{
+  solution.value=button.dataset.type;
+  direct.value=button.dataset.value;
+  calculate();
+ });
+});
+
+syncConcentration();
+calculate();
+</script>
+</body>
+</html>
