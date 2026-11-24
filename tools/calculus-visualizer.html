@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Calculus Visualizer | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root{--blue:#66BDEF;--bg:#061326;--text:#edf6ff;--muted:#9eb5ce;--line:rgba(102,189,239,.2)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#102c4b,#061326 65%);color:var(--text);font-family:'Cairo',sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#041123bb}
+.brand{font-size:19px;font-weight:800;color:var(--blue)}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1050px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);font-size:14px}
+.panel{background:linear-gradient(145deg,#102a48,#07172b);border:1px solid var(--line);border-radius:19px;padding:20px;margin-bottom:17px;box-shadow:0 15px 40px #0003}
+.panel h2{font-size:17px;margin:0 0 15px}
+select{width:100%;background:#102d4e;color:white;border:1px solid var(--line);padding:12px;border-radius:9px;font-family:inherit}
+canvas{display:block;width:100%;height:320px;background:#07172b;border:1px solid var(--line);border-radius:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.control{background:#091b31;border:1px solid var(--line);padding:15px;border-radius:13px}
+.control label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:12px}
+output{color:var(--blue)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric{background:#091b31;border:1px solid var(--line);border-radius:13px;padding:16px;text-align:center}
+.metric small{color:var(--muted);font-size:12px}
+.metric strong{display:block;font-size:23px;color:var(--blue);margin:5px 0}
+.formula{direction:ltr;text-align:center;padding:15px;background:#091b31;border:1px solid var(--line);border-radius:12px;font-size:19px;color:#c8e9ff}
+.info{font-size:13px;color:var(--muted);line-height:2;margin-top:13px}
+button{border:1px solid var(--line);background:#102d4e;color:white;padding:10px 17px;border-radius:10px;font-family:inherit;font-weight:700;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button.primary{background:var(--blue);color:#061326}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:650px){.grid,.metrics{grid-template-columns:1fr}header{padding:15px 4%}canvas{height:270px}.panel{padding:15px}}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">TAGHEER <span>TEAM</span></div>
+ <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+ <section class="heading">
+  <h1>Calculus <span>Visualizer</span></h1>
+  <p>استكشف المشتقات والتكاملات بطريقة تفاعلية</p>
+ </section>
+
+ <section class="panel">
+  <h2>اختيار الدالة</h2>
+  <select id="function">
+   <option value="square">f(x) = x²</option>
+   <option value="cube">f(x) = x³</option>
+   <option value="sin">f(x) = sin(x)</option>
+   <option value="cos">f(x) = cos(x)</option>
+   <option value="exp">f(x) = eˣ</option>
+   <option value="linear">f(x) = 2x + 1</option>
+  </select>
+  <p class="info">تُستخدم وحدة الراديان في الدوال المثلثية.</p>
+ </section>
+
+ <section class="panel">
+  <h2>تصور المشتقة والمماس</h2>
+  <canvas id="derivativeCanvas" width="1000" height="420"></canvas>
+  <div class="grid" style="margin-top:15px">
+   <div class="control">
+    <label>موضع النقطة (x) <output id="xValue">1.0</output></label>
+    <input id="xPoint" type="range" min="-3" max="3" step="0.1" value="1">
+   </div>
+   <div class="control">
+    <label>عرض الرسم <output id="rangeValue">4</output></label>
+    <input id="graphRange" type="range" min="2" max="8" step="1" value="4">
+   </div>
+  </div>
+  <div class="metrics" style="margin-top:15px">
+   <div class="metric">
+    <small>قيمة الدالة f(x)</small>
+    <strong id="functionValue">1.000</strong>
+   </div>
+   <div class="metric">
+    <small>المشتقة f'(x)</small>
+    <strong id="derivativeValue">2.000</strong>
+   </div>
+   <div class="metric">
+    <small>ميل المماس</small>
+    <strong id="slopeValue">2.000</strong>
+   </div>
+  </div>
+  <p class="info">المماس هو خط مستقيم يلامس المنحنى عند النقطة المختارة. ميله يساوي قيمة المشتقة عند تلك النقطة.</p>
+ </section>
+
+ <section class="panel">
+  <h2>حساب التكامل المحدد</h2>
+  <div class="formula">∫ f(x) dx from a to b</div>
+  <div class="grid" style="margin-top:15px">
+   <div class="control">
+    <label>الحد السفلي (a) <output id="aValue">0</output></label>
+    <input id="lower" type="range" min="-3" max="2" step="0.1" value="0">
+   </div>
+   <div class="control">
+    <label>الحد العلوي (b) <output id="bValue">2</output></label>
+    <input id="upper" type="range" min="-2" max="4" step="0.1" value="2">
+   </div>
+  </div>
+  <canvas id="integralCanvas" width="1000" height="340" style="margin-top:15px"></canvas>
+  <div class="metric" style="margin-top:15px">
+   <small>قيمة التكامل المحدد التقريبية</small>
+   <strong id="integralValue">2.667</strong>
+  </div>
+  <p class="info" id="integralExplanation">تم حساب المساحة باستخدام قاعدة شبه المنحرف.</p>
+ </section>
+
+ <section class="panel">
+  <h2>المفاهيم الرياضية</h2>
+  <div class="info">
+   <strong style="color:var(--blue)">المشتقة:</strong>
+   تقيس معدل التغير اللحظي للدالة، وتمثل ميل المماس للمنحنى عند نقطة.<br>
+   <strong style="color:var(--blue)">التكامل المحدد:</strong>
+   يحسب صافي المساحة الموقعة بين المنحنى ومحور x ضمن فترة محددة.<br>
+   <strong style="color:var(--blue)">قاعدة شبه المنحرف:</strong>
+   طريقة عددية لتقريب قيمة التكامل بتقسيم الفترة إلى أجزاء صغيرة.
+  </div>
+ </section>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Mathematics Learning</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const derivativeCanvas=$("derivativeCanvas");
+const dctx=derivativeCanvas.getContext("2d");
+const integralCanvas=$("integralCanvas");
+const ictx=integralCanvas.getContext("2d");
+
+function f(x){
+ switch($("function").value){
+  case "square":return x*x;
+  case "cube":return x*x*x;
+  case "sin":return Math.sin(x);
+  case "cos":return Math.cos(x);
+  case "exp":return Math.exp(x);
+  case "linear":return 2*x+1;
+  default:return x*x;
+ }
+}
+
+function derivative(x){
+ const h=0.00001;
+ return (f(x+h)-f(x-h))/(2*h);
+}
+
+function integral(a,b){
+ const n=2000;
+ const dx=(b-a)/n;
+ let sum=(f(a)+f(b))/2;
+ for(let i=1;i<n;i++){
+  sum+=f(a+i*dx);
+ }
+ return sum*dx;
+}
+
+function drawGrid(ctx,w,h,scaleX,scaleY,centerX,centerY){
+ ctx.clearRect(0,0,w,h);
+ ctx.strokeStyle="rgba(102,189,239,.09)";
+ ctx.lineWidth=1;
+ for(let x=0;x<=w;x+=50){
+  ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();
+ }
+ for(let y=0;y<=h;y+=40){
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+ }
+ ctx.strokeStyle="#9eb5ce";
+ ctx.lineWidth=1.5;
+ ctx.beginPath();ctx.moveTo(0,centerY);ctx.lineTo(w,centerY);ctx.stroke();
+ ctx.beginPath();ctx.moveTo(centerX,0);ctx.lineTo(centerX,h);ctx.stroke();
+}
+
+function drawDerivative(){
+ const w=1000,h=420;
+ const x0=Number($("xPoint").value);
+ const range=Number($("graphRange").value);
+ const A=range;
+ const centerX=w/2,centerY=h/2;
+ const sx=w/(2*A),sy=40;
+ drawGrid(dctx,w,h,sx,sy,centerX,centerY);
+
+ const X=x=>centerX+x*sx;
+ const Y=y=>centerY-y*sy;
+
+ dctx.beginPath();
+ for(let px=0;px<=w;px++){
+  const x=(px-centerX)/sx;
+  const y=f(x);
+  if(!Number.isFinite(y)||Math.abs(y)>100)continue;
+  if(px===0)dctx.moveTo(px,Y(y));
+  else dctx.lineTo(px,Y(y));
+ }
+ dctx.strokeStyle="#66BDEF";
+ dctx.lineWidth=4;
+ dctx.stroke();
+
+ const y0=f(x0),m=derivative(x0);
+ dctx.beginPath();
+ dctx.moveTo(0,Y(y0+m*((0-centerX)/sx-x0)));
+ dctx.lineTo(w,Y(y0+m*((w-centerX)/sx-x0)));
+ dctx.strokeStyle="#f3b5ff";
+ dctx.lineWidth=2;
+ dctx.setLineDash([9,7]);
+ dctx.stroke();
+ dctx.setLineDash([]);
+
+ dctx.beginPath();
+ dctx.arc(X(x0),Y(y0),8,0,Math.PI*2);
+ dctx.fillStyle="#f7c96a";
+ dctx.fill();
+
+ dctx.fillStyle="#f7c96a";
+ dctx.font="bold 18px Cairo";
+ dctx.fillText("P",X(x0)+12,Y(y0)-12);
+
+ $("xValue").textContent=x0.toFixed(1);
+ $("rangeValue").textContent=range;
+ $("functionValue").textContent=y0.toFixed(3);
+ $("derivativeValue").textContent=m.toFixed(3);
+ $("slopeValue").textContent=m.toFixed(3);
+}
+
+function drawIntegral(){
+ const w=1000,h=340;
+ const a=Number($("lower").value);
+ const b=Number($("upper").value);
+ const minX=-4,maxX=5;
+ const centerX=(0-minX)/(maxX-minX)*w;
+ const centerY=h/2;
+ const sx=w/(maxX-minX),sy=30;
+ drawGrid(ictx,w,h,sx,sy,centerX,centerY);
+
+ const X=x=>(x-minX)*sx;
+ const Y=y=>centerY-y*sy;
+
+ // المنطقة تحت المنحنى
+ ictx.beginPath();
+ ictx.moveTo(X(a),Y(0));
+ for(let i=0;i<=300;i++){
+  const x=a+(b-a)*i/300;
+  ictx.lineTo(X(x),Y(f(x)));
+ }
+ ictx.lineTo(X(b),Y(0));
+ ictx.closePath();
+ ictx.fillStyle="rgba(102,189,239,.28)";
+ ictx.fill();
+
+ // المنحنى
+ ictx.beginPath();
+ for(let i=0;i<=500;i++){
+  const x=minX+(maxX-minX)*i/500;
+  const y=f(x);
+  if(i===0)ictx.moveTo(X(x),Y(y));
+  else ictx.lineTo(X(x),Y(y));
+ }
+ ictx.strokeStyle="#66BDEF";
+ ictx.lineWidth=4;
+ ictx.stroke();
+
+ // حدود التكامل
+ ictx.strokeStyle="#f7c96a";
+ ictx.lineWidth=2;
+ [a,b].forEach(x=>{
+  ictx.beginPath();
+  ictx.moveTo(X(x),Y(0));
+  ictx.lineTo(X(x),Y(f(x)));
+  ictx.stroke();
+ });
+
+ $("aValue").textContent=a.toFixed(1);
+ $("bValue").textContent=b.toFixed(1);
+ const result=integral(a,b);
+ $("integralValue").textContent=result.toFixed(4);
+ $("integralExplanation").textContent=
+  "تم تقريب التكامل من "+a.toFixed(1)+" إلى "+b.toFixed(1)+
+  " باستخدام 2000 تقسيم بطريقة شبه المنحرف. القيمة تمثل المساحة الموقعة.";
+}
+
+function update(){
+ drawDerivative();
+ drawIntegral();
+}
+
+["function","xPoint","graphRange","lower","upper"].forEach(id=>{
+ $(id).addEventListener("input",update);
+ $(id).addEventListener("change",update);
+});
+
+update();
+</script>
+</body>
+</html>
