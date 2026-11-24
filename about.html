@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>من نحن | TAGHEER TEAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy:#00214D;
+  --blue:#66BDEF;
+  --bg:#061326;
+  --card:#0c1d33;
+  --text:#f4f8ff;
+  --muted:#a7b8ce;
+  --border:rgba(102,189,239,.17);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+}
+a{color:inherit;text-decoration:none}
+.container{width:min(1100px,90%);margin:auto}
+nav{
+  position:sticky;top:0;z-index:10;
+  background:rgba(6,19,38,.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  min-height:76px;display:flex;
+  align-items:center;justify-content:space-between;
+  gap:20px;
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900}
+.logo{
+  width:43px;height:43px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  border:1px solid rgba(255,255,255,.3);
+  font-size:21px;
+}
+.brand small{display:block;color:var(--blue);font-size:10px;letter-spacing:2px}
+.nav-link{color:var(--muted);font-size:13px}
+.nav-link:hover{color:var(--blue)}
+.hero{
+  padding:105px 0 90px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  background:
+  radial-gradient(ellipse at 50% 0%,rgba(102,189,239,.17),transparent 60%),
+  linear-gradient(180deg,#091c35,var(--bg));
+}
+.eyebrow{
+  color:var(--blue);font-size:12px;
+  letter-spacing:3px;font-weight:800;
+}
+.hero h1{
+  font-size:clamp(38px,8vw,76px);
+  line-height:1.25;margin:18px 0;
+  font-weight:900;
+}
+.hero h1 span{
+  color:var(--blue);
+  text-shadow:0 0 35px rgba(102,189,239,.25);
+}
+.hero p{
+  color:var(--muted);max-width:680px;
+  margin:0 auto;font-size:15px;
+}
+.hero-line{
+  width:75px;height:3px;background:var(--blue);
+  margin:30px auto;border-radius:10px;
+  box-shadow:0 0 20px var(--blue);
+}
+section{padding:75px 0}
+.section-head{text-align:center;margin-bottom:38px}
+.section-head small{color:var(--blue);font-weight:800;letter-spacing:2px}
+.section-head h2{font-size:clamp(26px,5vw,39px);margin-top:8px}
+.section-head p{color:var(--muted);font-size:13px;margin-top:8px}
+.story{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:28px;align-items:stretch;
+}
+.panel{
+  background:linear-gradient(145deg,rgba(15,39,66,.95),rgba(8,25,45,.95));
+  border:1px solid var(--border);
+  border-radius:22px;padding:30px;
+}
+.panel h3{font-size:22px;margin-bottom:13px}
+.panel p{color:var(--muted);font-size:14px}
+.quote{
+  display:flex;flex-direction:column;justify-content:center;
+  text-align:center;
+  background:radial-gradient(circle at center,rgba(102,189,239,.16),transparent 70%),var(--card);
+}
+.quote strong{font-size:27px;color:var(--blue);line-height:1.5}
+.quote span{font-size:12px;color:var(--muted);margin-top:15px}
+.grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.info-card{
+  padding:27px;border-radius:19px;
+  background:var(--card);border:1px solid var(--border);
+  transition:.25s;
+}
+.info-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(102,189,239,.55);
+}
+.card-icon{
+  width:47px;height:47px;border-radius:14px;
+  display:grid;place-items:center;
+  background:rgba(102,189,239,.12);
+  color:var(--blue);font-size:23px;margin-bottom:17px;
+}
+.info-card h3{font-size:18px;margin-bottom:8px}
+.info-card p{font-size:13px;color:var(--muted)}
+.values{grid-template-columns:repeat(4,1fr)}
+.value{text-align:center;padding:23px 12px}
+.value .card-icon{margin:0 auto 13px}
+.committees{grid-template-columns:repeat(2,1fr)}
+.committee{
+  display:flex;gap:18px;align-items:flex-start;
+}
+.committee .card-icon{flex-shrink:0}
+.timeline{max-width:760px;margin:auto}
+.timeline-item{
+  position:relative;padding:0 32px 30px 0;
+  border-right:2px solid rgba(102,189,239,.35);
+}
+.timeline-item:last-child{border-right-color:transparent}
+.timeline-item:before{
+  content:"";position:absolute;right:-7px;top:8px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--blue);box-shadow:0 0 15px var(--blue);
+}
+.timeline-item h3{font-size:17px;color:var(--blue)}
+.timeline-item p{font-size:13px;color:var(--muted)}
+.cta{
+  text-align:center;
+  background:linear-gradient(135deg,#0d2b4d,#091a30);
+  border:1px solid var(--border);
+  border-radius:25px;padding:48px 24px;
+}
+.cta h2{font-size:28px;margin-bottom:12px}
+.cta p{color:var(--muted);font-size:14px;margin-bottom:24px}
+.btn{
+  display:inline-block;padding:11px 25px;
+  border-radius:12px;background:var(--blue);
+  color:#061326;font-weight:900;font-size:13px;
+}
+footer{
+  border-top:1px solid var(--border);
+  padding:25px 0;text-align:center;
+  color:var(--muted);font-size:12px;
+}
+footer strong{color:var(--blue)}
+@media(max-width:750px){
+  .story{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+  .values{grid-template-columns:1fr 1fr}
+  .committees{grid-template-columns:1fr}
+  .hero{padding:75px 0}
+}
+@media(max-width:430px){
+  .grid{grid-template-columns:1fr}
+  .nav-inner{min-height:65px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <span class="logo">T</span>
+      <span>TAGHEER TEAM<small>UNIVERSITY COMMUNITY</small></span>
+    </a>
+    <a class="nav-link" href="index.html">العودة للرئيسية ←</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">WHO WE ARE · TAGHEER TEAM</div>
+    <h1>نحن <span>TAGHEER</span><br>TEAM</h1>
+    <p>
+      مساحة طلابية تجمع الأفكار والطموحات،
+      وتؤمن بأن العمل الجماعي والمعرفة والمبادرة
+      هي خطوات أساسية نحو مجتمع جامعي أفضل.
+    </p>
+    <div class="hero-line"></div>
+    <p>معاً نصنع الفرق، ونحوّل الأفكار إلى أثر.</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <small>OUR STORY</small>
+      <h2>قصتنا</h2>
+      <p>الفكرة التي تجمعنا والهدف الذي نعمل من أجله</p>
+    </div>
+
+    <div class="story">
+      <div class="panel">
+        <h3>من الفكرة إلى العمل</h3>
+        <p>
+          TAGHEER TEAM هو فريق طلابي يهدف إلى بناء بيئة
+          جامعية أكثر تفاعلاً وتعاوناً، من خلال المبادرات
+          والأنشطة والمحتوى المعرفي والعمل الجماعي.
+          نؤمن بأن لكل طالب فكرة تستحق أن تُسمع،
+          ولكل مبادرة فرصة لصناعة أثر إيجابي.
+        </p>
+      </div>
+      <div class="panel quote">
+        <strong>التغيير يبدأ بفكرة، ويكبر بالعمل الجماعي.</strong>
+        <span>TAGHEER TEAM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <small>OUR DIRECTION</small>
+      <h2>رؤيتنا ورسالتنا</h2>
+    </div>
+    <div class="grid">
+      <article class="info-card">
+        <div class="card-icon">◎</div>
+        <h3>رؤيتنا</h3>
+        <p>
+          أن نكون مجتمعاً طلابياً فاعلاً
+          يساهم في تطوير الحياة الجامعية
+          ويشجع الإبداع والمبادرة.
+        </p>
+      </article>
+      <article class="info-card">
+        <div class="card-icon">↗</div>
+        <h3>رسالتنا</h3>
+        <p>
+          توفير مساحة للتعاون وتبادل المعرفة
+          وتنظيم المبادرات والأنشطة التي
+          تعزز مشاركة الطلبة.
+        </p>
+      </article>
+      <article class="info-card">
+        <div class="card-icon">✦</div>
+        <h3>هدفنا</h3>
+        <p>
+          تحويل الطاقات والأفكار الطلابية
+          إلى أعمال ومشاريع ومبادرات
+          ذات قيمة للمجتمع الجامعي.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <small>OUR VALUES</small>
+      <h2>قيمنا</h2>
+      <p>المبادئ التي توجه عملنا</p>
+    </div>
+    <div class="grid values">
+      <article class="info-card value">
+        <div class="card-icon">◆</div>
+        <h3>التعاون</h3>
+        <p>نعمل معاً لتحقيق أهداف مشتركة.</p>
+      </article>
+      <article class="info-card value">
+        <div class="card-icon">✧</div>
+        <h3>الإبداع</h3>
+        <p>نرحب بالأفكار الجديدة والحلول المبتكرة.</p>
+      </article>
+      <article class="info-card value">
+        <div class="card-icon">◈</div>
+        <h3>المسؤولية</h3>
+        <p>نلتزم بالجودة واحترام العمل والوقت.</p>
+      </article>
+      <article class="info-card value">
+        <div class="card-icon">⬡</div>
+        <h3>الانتماء</h3>
+        <p>نساهم في بناء مجتمع جامعي متماسك.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <small>OUR COMMITTEES</small>
+      <h2>اللجان ومجالات العمل</h2>
+      <p>مجالات تنظيمية يمكن تخصيصها وفق هيكل الفريق</p>
+    </div>
+    <div class="grid committees">
+      <article class="info-card committee">
+        <div class="card-icon">▤</div>
+        <div>
+          <h3>اللجنة الإعلامية</h3>
+          <p>إعداد المحتوى والتغطية الإعلامية والتواصل الرقمي.</p>
+        </div>
+      </article>
+      <article class="info-card committee">
+        <div class="card-icon">✦</div>
+        <div>
+          <h3>اللجنة التنظيمية</h3>
+          <p>تنسيق الفعاليات والأنشطة ومتابعة تنفيذها.</p>
+        </div>
+      </article>
+      <article class="info-card committee">
+        <div class="card-icon">⌘</div>
+        <div>
+          <h3>اللجنة الأكاديمية</h3>
+          <p>دعم تبادل المصادر والمحتوى والأنشطة التعليمية.</p>
+        </div>
+      </article>
+      <article class="info-card committee">
+        <div class="card-icon">♡</div>
+        <div>
+          <h3>لجنة المبادرات</h3>
+          <p>تطوير الأفكار المجتمعية والتطوعية والمبادرات.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head">
+      <small>OUR JOURNEY</small>
+      <h2>محطات في رحلتنا</h2>
+      <p>مساحة لتوثيق مراحل تطور الفريق وإنجازاته</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>البداية</h3>
+        <p>توثيق فكرة تأسيس الفريق وبدايات العمل.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>بناء المجتمع</h3>
+        <p>توثيق مراحل انضمام الطلبة وتطوير مجالات العمل.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>المبادرات والإنجازات</h3>
+        <p>إضافة المبادرات والفعاليات والإنجازات الفعلية للفريق.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>المستقبل</h3>
+        <p>مواصلة التطوير وفتح آفاق جديدة للتعاون والإبداع.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta">
+      <h2>رحلتنا مستمرة</h2>
+      <p>
+        كل فكرة جديدة يمكن أن تكون بداية لشيء أكبر.
+        أهلاً بكل من يؤمن بالتعاون وصناعة الأثر.
+      </p>
+      <a href="index.html" class="btn">العودة إلى TAGHEER TEAM</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <strong>TAGHEER TEAM</strong>
+    <p>© <span id="year"></span> TAGHEER TEAM. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
