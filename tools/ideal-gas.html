@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#061326">
+<title>Ideal Gas Law Simulator | TAGHEER TEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#061326;--panel:#0c1e34;--blue:#66bdef;
+  --text:#f3f8ff;--muted:#91a8bf;--line:#ffffff18;
+  --green:#54d6a0;--orange:#ffb36b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Alexandria',sans-serif}
+button,input,select{font-family:inherit}
+.topbar{
+  height:70px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 5%;
+  background:#071629;border-bottom:1px solid var(--line)
+}
+.brand{font-size:14px;font-weight:800;letter-spacing:1px}
+.brand span{color:var(--blue)}
+.back{font-size:10px;color:var(--muted);text-decoration:none}
+.hero{
+  padding:48px 5% 35px;
+  background:radial-gradient(ellipse at 20% 0%,#1682bd25,transparent 55%)
+}
+.kicker{font-size:10px;letter-spacing:2px;color:var(--blue)}
+h1{font-size:clamp(27px,5vw,46px);margin:14px 0}
+.hero p{font-size:12px;color:var(--muted);line-height:2}
+.container{max-width:1100px;margin:auto;padding:25px 5% 65px}
+.equation{
+  direction:ltr;text-align:center;padding:23px;
+  background:linear-gradient(120deg,#102b47,#142b40);
+  border:1px solid #66bdef44;border-radius:13px;margin-bottom:18px
+}
+.equation strong{font-family:Georgia,serif;font-size:clamp(29px,6vw,43px);color:var(--blue)}
+.equation p{font-size:9px;color:var(--muted);margin-top:8px}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.panel h2{font-size:14px;margin-bottom:8px}
+.desc{font-size:10px;color:var(--muted);line-height:2;margin-bottom:20px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field label{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.field input,.field select{
+  width:100%;padding:12px;background:#061326;
+  border:1px solid var(--line);border-radius:8px;
+  color:white;outline:none;font-size:11px;direction:ltr
+}
+.field input:focus,.field select:focus{border-color:var(--blue)}
+.field select{direction:rtl}
+.field input:disabled{opacity:.45;cursor:not-allowed}
+.field small{display:block;color:#71879e;font-size:8px;margin-top:6px}
+.actions{display:flex;gap:9px;margin-top:18px}
+.btn{padding:12px 16px;border:0;border-radius:8px;font-size:10px;cursor:pointer}
+.primary{background:var(--blue);color:#061326;font-weight:700;flex:1}
+.secondary{background:#ffffff10;color:white;border:1px solid var(--line)}
+.error{
+  display:none;margin-top:13px;padding:12px;border-radius:8px;
+  background:#ff777714;border:1px solid #ff777744;
+  color:#ff9999;font-size:10px;line-height:1.8
+}
+.result-placeholder{text-align:center;padding:45px 10px;color:var(--muted)}
+.result-placeholder strong{display:block;font-size:45px;color:#66bdef66}
+.result-placeholder p{font-size:10px;line-height:2;margin-top:12px}
+.result{display:none}
+.result-badge{
+  display:inline-block;background:#54d6a014;color:var(--green);
+  padding:6px 11px;border-radius:30px;font-size:9px
+}
+.answer{
+  text-align:center;direction:ltr;padding:24px 10px;margin:15px 0;
+  background:#061326;border:1px solid #66bdef44;border-radius:10px
+}
+.answer small{display:block;color:var(--muted);font-size:9px}
+.answer strong{display:block;font-size:clamp(27px,5vw,38px);color:var(--blue);margin:9px 0}
+.answer span{font-size:10px;color:var(--muted)}
+.summary{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px
+}
+.summary div{padding:12px;background:#ffffff08;border-radius:8px}
+.summary small{display:block;color:var(--muted);font-size:9px}
+.summary strong{display:block;font-size:12px;margin-top:5px;direction:ltr}
+.steps{margin-top:22px}
+.steps h3{font-size:12px;margin-bottom:12px}
+.step{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.step i{
+  min-width:24px;height:24px;border-radius:7px;
+  background:#66bdef18;color:var(--blue);
+  display:grid;place-items:center;font-style:normal;font-size:10px
+}
+.step p{font-size:10px;color:var(--muted);line-height:2}
+.step b{color:white}
+.examples{margin-top:18px}
+.examples p{font-size:10px;color:var(--muted);margin-bottom:10px}
+.example-list{display:flex;flex-wrap:wrap;gap:8px}
+.example{
+  direction:ltr;padding:8px 11px;border-radius:7px;
+  background:#ffffff09;color:var(--blue);
+  border:1px solid var(--line);font-size:10px;cursor:pointer
+}
+.note{
+  margin-top:18px;padding:14px;border-radius:9px;
+  background:#66bdef0c;border:1px solid #66bdef25;
+  color:var(--muted);font-size:9px;line-height:2
+}
+footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:750px){.layout{grid-template-columns:1fr}.panel{padding:18px}}
+@media(max-width:400px){.fields{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">TAGHEER <span>TEAM</span></a>
+  <a class="back" href="../index.html">← العودة للرئيسية</a>
+</header>
+
+<section class="hero">
+  <span class="kicker">CHEMISTRY LAB / TOOL 04</span>
+  <h1>Ideal Gas <span style="color:#66bdef">Simulator.</span></h1>
+  <p>
+    استكشف العلاقة بين الضغط والحجم ودرجة الحرارة وعدد المولات،
+    وحل مسائل قانون الغاز المثالي خطوة بخطوة.
+  </p>
+</section>
+
+<main class="container">
+
+  <div class="equation">
+    <strong>PV = nRT</strong>
+    <p>IDEAL GAS LAW · UNIVERSAL GAS EQUATION</p>
+  </div>
+
+  <div class="layout">
+
+    <section class="panel">
+      <h2>إعداد المسألة</h2>
+      <p class="desc">أدخل ثلاث قيم معلومة واختر المتغير الذي تريد حسابه.</p>
+
+      <div class="field" style="margin-bottom:15px">
+        <label for="unknown">المتغير المطلوب حسابه</label>
+        <select id="unknown">
+          <option value="P">الضغط (P)</option>
+          <option value="V">الحجم (V)</option>
+          <option value="n">عدد المولات (n)</option>
+          <option value="T">درجة الحرارة (T)</option>
+        </select>
+      </div>
+
+      <div class="fields">
+        <div class="field">
+          <label for="pressure">Pressure · P</label>
+          <input id="pressure" type="number" min="0" step="any" value="1">
+          <small>atm</small>
+        </div>
+
+        <div class="field">
+          <label for="volume">Volume · V</label>
+          <input id="volume" type="number" min="0" step="any" value="22.414">
+          <small>L</small>
+        </div>
+
+        <div class="field">
+          <label for="moles">Moles · n</label>
+          <input id="moles" type="number" min="0" step="any" value="1">
+          <small>mol</small>
+        </div>
+
+        <div class="field">
+          <label for="temperature">Temperature · T</label>
+          <input id="temperature" type="number" min="0" step="any" value="273.15">
+          <small>K</small>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="calculate">احسب النتيجة ←</button>
+        <button class="btn secondary" id="reset">إعادة ضبط</button>
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <div class="examples">
+        <p>تجارب جاهزة:</p>
+        <div class="example-list">
+          <button class="example" data-p="1" data-v="22.414" data-n="1" data-t="273.15" data-u="P">STP</button>
+          <button class="example" data-p="2" data-v="10" data-n="1" data-t="300" data-u="P">Pressure</button>
+          <button class="example" data-p="1" data-v="0" data-n="2" data-t="300" data-u="V">Volume</button>
+          <button class="example" data-p="1" data-v="10" data-n="0" data-t="300" data-u="n">Moles</button>
+          <button class="example" data-p="2" data-v="10" data-n="1" data-t="0" data-u="T">Temperature</button>
+        </div>
+      </div>
+
+      <div class="note">
+        <b style="color:#66bdef">ثابت الغاز R:</b>
+        0.082057 L·atm·mol⁻¹·K⁻¹
+        <br>
+        استخدم الحجم باللتر والضغط بوحدة atm ودرجة الحرارة بالكلفن.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>نتيجة المحاكاة</h2>
+      <p class="desc">CALCULATION RESULTS</p>
+
+      <div class="result-placeholder" id="placeholder">
+        <strong>PV</strong>
+        <p>أدخل القيم المطلوبة واضغط على احسب النتيجة لعرض الحل.</p>
+      </div>
+
+      <div class="result" id="result">
+        <span class="result-badge">✓ تم الحساب بنجاح</span>
+
+        <div class="answer">
+          <small id="answerLabel">PRESSURE</small>
+          <strong id="answerValue">1.000</strong>
+          <span id="answerUnit">atm</span>
+        </div>
+
+        <div class="summary">
+          <div><small>الضغط P</small><strong id="sP"></strong></div>
+          <div><small>الحجم V</small><strong id="sV"></strong></div>
+          <div><small>عدد المولات n</small><strong id="sN"></strong></div>
+          <div><small>درجة الحرارة T</small><strong id="sT"></strong></div>
+        </div>
+
+        <div class="steps">
+          <h3>خطوات الحل</h3>
+          <div id="steps"></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer>TAGHEER TEAM · Interactive Chemistry Tools</footer>
+
+<script>
+const R = 0.082057;
+
+const fields = {
+  P:document.getElementById("pressure"),
+  V:document.getElementById("volume"),
+  n:document.getElementById("moles"),
+  T:document.getElementById("temperature")
+};
+
+const labels = {
+  P:"PRESSURE",
+  V:"VOLUME",
+  n:"NUMBER OF MOLES",
+  T:"TEMPERATURE"
+};
+
+const units = {
+  P:"atm",
+  V:"L",
+  n:"mol",
+  T:"K"
+};
+
+const arabic = {
+  P:"الضغط",
+  V:"الحجم",
+  n:"عدد المولات",
+  T:"درجة الحرارة"
+};
+
+const unknown=document.getElementById("unknown");
+
+function updateDisabled(){
+  Object.keys(fields).forEach(key=>{
+    fields[key].disabled=(key===unknown.value);
+  });
+}
+
+unknown.addEventListener("change",updateDisabled);
+
+function format(value){
+  return Number(value).toLocaleString("en-US",{
+    maximumFractionDigits:6
+  });
+}
+
+function showError(message){
+  const error=document.getElementById("error");
+  error.textContent=message;
+  error.style.display="block";
+  document.getElementById("result").style.display="none";
+  document.getElementById("placeholder").style.display="block";
+}
+
+function addStep(number,title,content){
+  return `
+    <div class="step">
+      <i>${number}</i>
+      <p><b>${title}</b><br>${content}</p>
+    </div>
+  `;
+}
+
+function calculate(){
+  const target=unknown.value;
+  const error=document.getElementById("error");
+  error.style.display="none";
+
+  const values={};
+
+  for(const key of Object.keys(fields)){
+    if(key===target)continue;
+    const value=Number(fields[key].value);
+
+    if(fields[key].value.trim()===""||!Number.isFinite(value)||value<=0){
+      showError("يرجى إدخال قيمة موجبة وصحيحة لجميع المتغيرات المعروفة.");
+      return;
+    }
+    values[key]=value;
+  }
+
+  let answer;
+  let formula;
+  let substitution;
+  let steps=[];
+
+  if(target==="P"){
+    answer=(values.n*R*values.T)/values.V;
+    formula="P = nRT / V";
+    substitution=`P = (${values.n} × ${R} × ${values.T}) / ${values.V}`;
+  }
+
+  if(target==="V"){
+    answer=(values.n*R*values.T)/values.P;
+    formula="V = nRT / P";
+    substitution=`V = (${values.n} × ${R} × ${values.T}) / ${values.P}`;
+  }
+
+  if(target==="n"){
+    answer=(values.P*values.V)/(R*values.T);
+    formula="n = PV / RT";
+    substitution=`n = (${values.P} × ${values.V}) / (${R} × ${values.T})`;
+  }
+
+  if(target==="T"){
+    answer=(values.P*values.V)/(values.n*R);
+    formula="T = PV / nR";
+    substitution=`T = (${values.P} × ${values.V}) / (${values.n} × ${R})`;
+  }
+
+  if(!Number.isFinite(answer)||answer<=0){
+    showError("تعذر الحصول على نتيجة موجبة وصحيحة. تحقق من القيم المدخلة.");
+    return;
+  }
+
+  const all={...values,[target]:answer};
+
+  steps.push(addStep(1,"القانون الأساسي","PV = nRT"));
+  steps.push(addStep(2,"إعادة ترتيب القانون",formula));
+  steps.push(addStep(3,"التعويض بالقيم",substitution));
+  steps.push(addStep(4,"النتيجة النهائية",
+    `${arabic[target]} = ${format(answer)} ${units[target]}`));
+
+  document.getElementById("answerLabel").textContent=labels[target];
+  document.getElementById("answerValue").textContent=format(answer);
+  document.getElementById("answerUnit").textContent=units[target];
+
+  document.getElementById("sP").textContent=format(all.P)+" atm";
+  document.getElementById("sV").textContent=format(all.V)+" L";
+  document.getElementById("sN").textContent=format(all.n)+" mol";
+  document.getElementById("sT").textContent=format(all.T)+" K";
+
+  document.getElementById("steps").innerHTML=steps.join("");
+  document.getElementById("placeholder").style.display="none";
+  document.getElementById("result").style.display="block";
+}
+
+document.getElementById("calculate").addEventListener("click",calculate);
+
+document.getElementById("reset").addEventListener("click",()=>{
+  fields.P.value="1";
+  fields.V.value="22.414";
+  fields.n.value="1";
+  fields.T.value="273.15";
+  unknown.value="P";
+  updateDisabled();
+  document.getElementById("error").style.display="none";
+  document.getElementById("result").style.display="none";
+  document.getElementById("placeholder").style.display="block";
+});
+
+document.querySelectorAll(".example").forEach(button=>{
+  button.addEventListener("click",()=>{
+    fields.P.value=button.dataset.p;
+    fields.V.value=button.dataset.v;
+    fields.n.value=button.dataset.n;
+    fields.T.value=button.dataset.t;
+    unknown.value=button.dataset.u;
+    updateDisabled();
+
+    document.getElementById("error").style.display="none";
+    document.getElementById("result").style.display="none";
+    document.getElementById("placeholder").style.display="block";
+  });
+});
+
+updateDisabled();
+</script>
+
+</body>
+</html>
