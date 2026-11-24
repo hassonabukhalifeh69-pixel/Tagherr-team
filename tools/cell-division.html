@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#061326">
+<title>Cell Division Simulator | TAGHEER TEAM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+:root {
+  --navy:#00214D;
+  --blue:#66BDEF;
+  --bg:#061326;
+  --panel:#0c203b;
+  --text:#edf6ff;
+  --muted:#9eb5ce;
+  --line:rgba(102,189,239,.2);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:radial-gradient(ellipse at top,#102c4b,var(--bg) 65%);
+  color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;
+}
+header{
+  padding:20px 5%;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:rgba(4,17,35,.7);backdrop-filter:blur(15px);
+}
+.brand{font-weight:800;color:var(--blue);font-size:19px;letter-spacing:1px}
+.brand span{color:white}
+.back{color:var(--blue);text-decoration:none;font-size:13px}
+main{width:min(1100px,92%);margin:35px auto 60px}
+.heading{text-align:center;margin-bottom:28px}
+.heading h1{font-size:clamp(25px,5vw,38px);margin:0 0 8px}
+.heading h1 span{color:var(--blue)}
+.heading p{color:var(--muted);margin:0;font-size:14px}
+.layout{display:grid;grid-template-columns:1.25fr .85fr;gap:18px}
+.panel{
+  background:linear-gradient(145deg,rgba(16,42,72,.95),rgba(7,23,43,.95));
+  border:1px solid var(--line);border-radius:20px;padding:20px;
+  box-shadow:0 15px 45px #0003;
+}
+.panel h2{font-size:17px;margin:0 0 15px}
+.visual{min-height:350px;display:grid;place-items:center;position:relative}
+svg{width:100%;max-width:480px;height:auto;overflow:visible}
+.cell{fill:#102f50;stroke:#66bdef;stroke-width:3}
+.membrane{fill:none;stroke:#9bdcff;stroke-width:2;opacity:.6}
+.chromosome{stroke:#f3b5ff;stroke-width:5;stroke-linecap:round;fill:none}
+.chromosome2{stroke:#b5d9ff;stroke-width:5;stroke-linecap:round;fill:none}
+.spindle{stroke:#66bdef;stroke-width:1.5;opacity:.65}
+.nucleus{fill:#163f68;stroke:#a7dfff;stroke-width:2}
+.pole{fill:#66bdef}
+.stage-name{font-size:22px;font-weight:800;color:var(--blue);margin-bottom:4px}
+.stage-sub{font-size:12px;color:var(--muted)}
+.description{color:#d8e8f7;font-size:14px;line-height:2;margin-top:15px}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+button{
+  border:1px solid var(--line);background:#102d4e;color:white;
+  border-radius:11px;padding:10px 15px;font-family:inherit;
+  font-weight:700;cursor:pointer;transition:.2s;
+}
+button:hover{border-color:var(--blue);background:#173e65}
+button.primary{background:var(--blue);color:#061326;border-color:var(--blue)}
+button:disabled{opacity:.35;cursor:not-allowed}
+.progress{display:flex;gap:5px;margin:15px 0 8px}
+.progress span{height:5px;flex:1;border-radius:8px;background:#25415e}
+.progress span.active{background:var(--blue);box-shadow:0 0 10px #66bdef}
+.stage-list{display:grid;gap:8px}
+.stage-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  text-align:right;width:100%;padding:10px 12px;
+}
+.stage-btn.active{border-color:var(--blue);background:#163d60}
+.stage-btn small{color:var(--muted)}
+.note{
+  border:1px solid rgba(102,189,239,.25);background:#0a1d34;
+  padding:13px;border-radius:12px;color:var(--muted);
+  font-size:12px;line-height:1.8;margin-top:15px;
+}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:var(--muted);margin-top:10px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-left:5px}
+footer{text-align:center;color:#7892ad;font-size:11px;padding:20px}
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr}
+  .visual{min-height:270px}
+  .panel{padding:16px}
+  header{padding:15px 4%}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">TAGHEER <span>TEAM</span></div>
+  <a class="back" href="../index.html">العودة للرئيسية ←</a>
+</header>
+
+<main>
+  <section class="heading">
+    <h1>Cell <span>Division</span> Simulator</h1>
+    <p>محاكاة تعليمية تفاعلية لمراحل الانقسام المتساوي في الخلية</p>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>المحاكاة البصرية</h2>
+      <div class="visual">
+        <svg id="cellSvg" viewBox="0 0 500 340" role="img" aria-label="رسم توضيحي لمراحل انقسام الخلية">
+          <defs>
+            <radialGradient id="cellGlow">
+              <stop offset="0%" stop-color="#24527b"/>
+              <stop offset="100%" stop-color="#0c2744"/>
+            </radialGradient>
+          </defs>
+          <ellipse id="cellBody" class="cell" cx="250" cy="165" rx="190" ry="135" fill="url(#cellGlow)"/>
+          <ellipse class="membrane" cx="250" cy="165" rx="180" ry="125"/>
+          <g id="spindles"></g>
+          <g id="chromosomes"></g>
+          <g id="nuclei"></g>
+          <g id="extra"></g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#f3b5ff"></i>الكروموسومات</span>
+        <span><i class="dot" style="background:#66bdef"></i>خيوط المغزل</span>
+        <span><i class="dot" style="background:#a7dfff"></i>الغشاء النووي</span>
+      </div>
+      <div class="progress" id="progress"></div>
+      <div class="controls">
+        <button id="prev">→ السابقة</button>
+        <button class="primary" id="play">▶ تشغيل</button>
+        <button id="next">التالية ←</button>
+        <button id="reset">↺ إعادة</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>مراحل الانقسام</h2>
+      <div class="stage-list" id="stageList"></div>
+      <div class="note">
+        <strong style="color:var(--blue)">معلومة علمية</strong><br>
+        يسبق الانقسام المتساوي الطور البيني (Interphase)، وفيه تنمو الخلية ويتضاعف DNA استعدادًا للانقسام.
+      </div>
+    </section>
+
+    <section class="panel" style="grid-column:1/-1">
+      <div class="stage-name" id="stageName">الطور البيني</div>
+      <div class="stage-sub" id="stageEnglish">Interphase</div>
+      <div class="description" id="description"></div>
+    </section>
+  </div>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Biology Learning</footer>
+
+<script>
+const stages = [
+ {
+  ar:"الطور البيني",en:"Interphase",
+  desc:"تنمو الخلية وتؤدي وظائفها الطبيعية، ويتضاعف الحمض النووي DNA لتصبح كل كروموسومة مكوّنة من كروماتيدين شقيقين. يستعد المركز الخلوي للمشاركة في الانقسام.",
+  type:0
+ },
+ {
+  ar:"الطور التمهيدي",en:"Prophase",
+  desc:"تتكثف الكروموسومات وتصبح مرئية بوضوح، ويبدأ الغشاء النووي بالتفكك تدريجيًا، كما تتكون خيوط المغزل التي ستساعد في تحريك الكروموسومات.",
+  type:1
+ },
+ {
+  ar:"الطور الاستوائي",en:"Metaphase",
+  desc:"تصطف الكروموسومات في منتصف الخلية على المستوى الاستوائي، وترتبط خيوط المغزل بمناطق السنترومير من الكروموسومات.",
+  type:2
+ },
+ {
+  ar:"الطور الانفصالي",en:"Anaphase",
+  desc:"تنفصل الكروماتيدات الشقيقة عند السنترومير، وتتحرك نحو قطبي الخلية المتعاكسين بفعل خيوط المغزل.",
+  type:3
+ },
+ {
+  ar:"الطور النهائي",en:"Telophase",
+  desc:"تصل مجموعتا الكروموسومات إلى قطبي الخلية، ويبدأ تكوّن غلاف نووي جديد حول كل مجموعة، وتبدأ الكروموسومات بالعودة إلى حالتها الأقل تكثفًا.",
+  type:4
+ },
+ {
+  ar:"الانقسام السيتوبلازمي",en:"Cytokinesis",
+  desc:"ينقسم السيتوبلازم وتتكون خليتان بنتان. تحتوي كل خلية على مجموعة من الكروموسومات مماثلة للمجموعة الموجودة في الخلية الأصلية بعد تضاعف DNA.",
+  type:5
+ }
+];
+
+let current = 0;
+let timer = null;
+
+const $ = id => document.getElementById(id);
+
+function line(x1,y1,x2,y2,cls="spindle"){
+ return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls}"/>`;
+}
+function chromosome(x,y,angle=0){
+ return `<g transform="translate(${x} ${y}) rotate(${angle})">
+ <path d="M-8 -17 L8 17 M8 -17 L-8 17" class="chromosome"/>
+ <circle cx="0" cy="0" r="3" fill="#fff"/>
+ </g>`;
+}
+function nucleus(x,y,rx=70,ry=55){
+ return `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" class="nucleus"/>`;
+}
+function pole(x,y){
+ return `<circle cx="${x}" cy="${y}" r="7" class="pole"/>`;
+}
+
+function draw(){
+ const type = stages[current].type;
+ let chromosomes = "";
+ let spindles = "";
+ let nuclei = "";
+ let extra = "";
+
+ if(type===0){
+  nuclei += nucleus(250,165,82,62);
+  extra += `<circle cx="250" cy="165" r="13" fill="#f3b5ff" opacity=".8"/>`;
+  [[220,145],[250,135],[280,155],[230,190],[270,190]].forEach((p,i)=>{
+   chromosomes += chromosome(p[0],p[1],i*25);
+  });
+  extra += `<circle cx="125" cy="165" r="5" fill="#66bdef"/><circle cx="375" cy="165" r="5" fill="#66bdef"/>`;
+ }
+ if(type===1){
+  [[205,125],[250,145],[295,125],[220,195],[275,195]].forEach((p,i)=>{
+   chromosomes += chromosome(p[0],p[1],i*27);
+  });
+  extra += pole(100,165)+pole(400,165);
+  for(let i=0;i<5;i++){
+   spindles += line(100,165,205+i*20,125+i*15);
+   spindles += line(400,165,205+i*20,125+i*15);
+  }
+ }
+ if(type===2){
+  extra += pole(85,165)+pole(415,165);
+  for(let i=0;i<6;i++){
+   const y=85+i*32;
+   chromosomes += chromosome(250,y,0);
+   spindles += line(85,165,242,y);
+   spindles += line(415,165,258,y);
+  }
+  extra += line(250,48,250,282,"membrane");
+ }
+ if(type===3){
+  extra += pole(85,165)+pole(415,165);
+  for(let i=0;i<5;i++){
+   const y=95+i*35;
+   chromosomes += chromosome(145+i*8,y,-35);
+   chromosomes += chromosome(355-i*8,y,35);
+   spindles += line(85,165,145+i*8,y);
+   spindles += line(415,165,355-i*8,y);
+  }
+ }
+ if(type===4){
+  nuclei += nucleus(155,165,62,68);
+  nuclei += nucleus(345,165,62,68);
+  for(let i=0;i<4;i++){
+   chromosomes += chromosome(135+i*13,145+i*12,i*25);
+   chromosomes += chromosome(325+i*13,145+i*12,i*25);
+  }
+  extra += pole(85,165)+pole(415,165);
+ }
+ if(type===5){
+  $("cellBody").setAttribute("rx","190");
+  $("cellBody").setAttribute("ry","135");
+  nuclei += nucleus(155,165,57,57);
+  nuclei += nucleus(345,165,57,57);
+  extra += `<path d="M250 32 Q220 165 250 298" stroke="#66bdef" stroke-width="3" fill="none" stroke-dasharray="5 5"/>`;
+  for(let i=0;i<3;i++){
+   chromosomes += chromosome(135+i*13,150+i*18,i*25);
+   chromosomes += chromosome(325+i*13,150+i*18,i*25);
+  }
+ }
+
+ if(type!==5){
+  $("cellBody").setAttribute("rx","190");
+  $("cellBody").setAttribute("ry","135");
+ }
+ $("chromosomes").innerHTML=chromosomes;
+ $("spindles").innerHTML=spindles;
+ $("nuclei").innerHTML=nuclei;
+ $("extra").innerHTML=extra;
+
+ $("stageName").textContent=stages[current].ar;
+ $("stageEnglish").textContent=stages[current].en;
+ $("description").textContent=stages[current].desc;
+ $("prev").disabled=current===0;
+ $("next").disabled=current===stages.length-1;
+
+ $("progress").innerHTML=stages.map((s,i)=>
+  `<span class="${i<=current?'active':''}"></span>`
+ ).join("");
+
+ $("stageList").innerHTML=stages.map((s,i)=>`
+  <button class="stage-btn ${i===current?'active':''}" data-stage="${i}">
+   <span>${i+1}. ${s.ar}</span>
+   <small>${s.en}</small>
+  </button>
+ `).join("");
+
+ document.querySelectorAll("[data-stage]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+   stopPlay();
+   current=Number(btn.dataset.stage);
+   draw();
+  });
+ });
+}
+
+function stopPlay(){
+ if(timer) clearInterval(timer);
+ timer=null;
+ $("play").textContent="▶ تشغيل";
+}
+
+$("prev").addEventListener("click",()=>{
+ stopPlay();
+ if(current>0){current--;draw();}
+});
+$("next").addEventListener("click",()=>{
+ stopPlay();
+ if(current<stages.length-1){current++;draw();}
+});
+$("reset").addEventListener("click",()=>{
+ stopPlay();current=0;draw();
+});
+$("play").addEventListener("click",()=>{
+ if(timer){stopPlay();return;}
+ if(current===stages.length-1) current=0;
+ draw();
+ $("play").textContent="Ⅱ إيقاف";
+ timer=setInterval(()=>{
+  if(current<stages.length-1){
+   current++;draw();
+   $("play").textContent="Ⅱ إيقاف";
+  }else{
+   stopPlay();
+  }
+ },2600);
+});
+
+draw();
+</script>
+</body>
+</html>
