@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#061326">
+<title>Molecular Structure Visualizer | TAGHEER TEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#061326;--panel:#0c1e34;--blue:#66bdef;
+ --text:#f3f8ff;--muted:#91a8bf;--line:#ffffff18;
+ --green:#54d6a0;--orange:#ffad65;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Alexandria',sans-serif}
+button,select{font-family:inherit}
+.topbar{
+ height:70px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 5%;
+ background:#071629;border-bottom:1px solid var(--line)
+}
+.brand{font-size:14px;font-weight:800;letter-spacing:1px}
+.brand span{color:var(--blue)}
+.back{font-size:10px;color:var(--muted);text-decoration:none}
+.hero{
+ padding:48px 5% 35px;
+ background:radial-gradient(ellipse at 20% 0%,#1682bd25,transparent 55%)
+}
+.kicker{font-size:10px;letter-spacing:2px;color:var(--blue)}
+h1{font-size:clamp(26px,5vw,45px);margin:14px 0}
+.hero p{font-size:12px;color:var(--muted);line-height:2}
+.container{max-width:1100px;margin:auto;padding:25px 5% 65px}
+.layout{display:grid;grid-template-columns:1fr 1.3fr;gap:16px;align-items:stretch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:21px}
+.panel h2{font-size:14px;margin-bottom:8px}
+.desc{font-size:10px;color:var(--muted);line-height:2;margin-bottom:18px}
+select{
+ width:100%;padding:13px;background:#061326;color:white;
+ border:1px solid var(--line);border-radius:8px;
+ font-size:11px;outline:none
+}
+select:focus{border-color:var(--blue)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:17px}
+.info{
+ padding:12px;background:#ffffff08;border:1px solid var(--line);
+ border-radius:8px
+}
+.info small{display:block;color:var(--muted);font-size:9px}
+.info strong{display:block;margin-top:6px;font-size:12px}
+.formula{
+ direction:ltr;text-align:center;font-size:27px;
+ color:var(--blue);font-weight:700;padding:17px 5px
+}
+.atom-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--muted)}
+.atom-dot{width:11px;height:11px;border-radius:50%}
+.viewer{
+ min-height:390px;position:relative;overflow:hidden;
+ display:flex;align-items:center;justify-content:center;
+ background:
+ radial-gradient(circle at 50% 50%,#173b5b88,transparent 60%),
+ #071629
+}
+.viewer svg{width:100%;height:390px;overflow:visible}
+.bond{stroke:#b5c8da;stroke-width:5;stroke-linecap:round;opacity:.9}
+.bond.double{stroke-width:3}
+.atom-circle{stroke:#ffffff88;stroke-width:1.5;filter:drop-shadow(0 0 8px #66bdef55)}
+.atom-label{
+ fill:white;font-size:13px;font-family:Arial,sans-serif;
+ font-weight:bold;text-anchor:middle;dominant-baseline:middle;
+ pointer-events:none
+}
+.atom-group{cursor:pointer}
+.atom-group:hover .atom-circle{stroke:white;stroke-width:3}
+.viewer-hint{
+ position:absolute;bottom:13px;left:0;right:0;
+ text-align:center;color:var(--muted);font-size:9px
+}
+.atom-details{
+ display:none;margin-top:13px;padding:13px;
+ background:#66bdef0c;border:1px solid #66bdef33;
+ border-radius:9px;font-size:10px;color:var(--muted);line-height:2
+}
+.atom-details b{color:var(--blue)}
+.actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.btn{
+ padding:10px 13px;border:1px solid var(--line);
+ background:#ffffff0b;color:white;border-radius:8px;
+ font-size:9px;cursor:pointer
+}
+.btn:hover{border-color:var(--blue)}
+.section-title{font-size:14px;margin:25px 0 12px}
+.geometry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.geometry{
+ padding:15px;background:var(--panel);
+ border:1px solid var(--line);border-radius:9px
+}
+.geometry strong{display:block;color:var(--blue);font-size:11px;margin-bottom:6px}
+.geometry p{font-size:9px;color:var(--muted);line-height:2}
+.note{
+ margin-top:17px;padding:13px;background:#66bdef0c;
+ border:1px solid #66bdef25;border-radius:9px;
+ color:var(--muted);font-size:9px;line-height:2
+}
+footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:750px){
+ .layout{grid-template-columns:1fr}
+ .panel{padding:17px}
+ .viewer,.viewer svg{min-height:320px;height:320px}
+ .geometry-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:390px){.geometry-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+ <a class="brand" href="../index.html">TAGHEER <span>TEAM</span></a>
+ <a class="back" href="../index.html">← العودة للرئيسية</a>
+</header>
+
+<section class="hero">
+ <span class="kicker">CHEMISTRY LAB / TOOL 05</span>
+ <h1>Molecular <span style="color:#66bdef">Visualizer.</span></h1>
+ <p>
+  اكتشف كيف ترتبط الذرات لتكوين الجزيئات،
+  واستكشف الصيغ الكيميائية والروابط والأشكال الهندسية للجزيئات.
+ </p>
+</section>
+
+<main class="container">
+ <div class="layout">
+
+  <section class="panel">
+   <h2>اختر الجزيء</h2>
+   <p class="desc">اختر أحد النماذج الجزيئية لمشاهدة تركيبه.</p>
+
+   <select id="molecule">
+    <option value="water">H₂O — Water — الماء</option>
+    <option value="co2">CO₂ — Carbon Dioxide — ثاني أكسيد الكربون</option>
+    <option value="methane">CH₄ — Methane — الميثان</option>
+    <option value="ammonia">NH₃ — Ammonia — الأمونيا</option>
+    <option value="oxygen">O₂ — Oxygen — الأكسجين</option>
+    <option value="nitrogen">N₂ — Nitrogen — النيتروجين</option>
+    <option value="hcl">HCl — Hydrogen Chloride — كلوريد الهيدروجين</option>
+    <option value="ethene">C₂H₄ — Ethene — الإيثين</option>
+    <option value="ethanol">C₂H₆O — Ethanol — الإيثانول</option>
+    <option value="benzene">C₆H₆ — Benzene — البنزين</option>
+    <option value="nacl">NaCl — Sodium Chloride — كلوريد الصوديوم</option>
+   </select>
+
+   <div class="formula" id="formula">H₂O</div>
+
+   <div class="info-grid">
+    <div class="info"><small>اسم المركب</small><strong id="name">الماء</strong></div>
+    <div class="info"><small>نوع الروابط</small><strong id="bondType">تساهمية قطبية</strong></div>
+    <div class="info"><small>الشكل الهندسي</small><strong id="geometry">منحني</strong></div>
+    <div class="info"><small>عدد الذرات</small><strong id="atomCount">3</strong></div>
+   </div>
+
+   <div class="atom-legend">
+    <div class="legend-item"><i class="atom-dot" style="background:#e8e8e8"></i> Hydrogen</div>
+    <div class="legend-item"><i class="atom-dot" style="background:#ed5656"></i> Oxygen</div>
+    <div class="legend-item"><i class="atom-dot" style="background:#55a5ee"></i> Nitrogen</div>
+    <div class="legend-item"><i class="atom-dot" style="background:#444b58"></i> Carbon</div>
+    <div class="legend-item"><i class="atom-dot" style="background:#d7bd45"></i> Sulfur</div>
+   </div>
+
+   <div class="note">
+    <b style="color:#66bdef">معلومة:</b>
+    الألوان في النماذج تمثل أنواع الذرات وفق ألوان تعليمية شائعة.
+    النموذج المعروض تمثيل ثنائي الأبعاد مبسط.
+   </div>
+  </section>
+
+  <section class="panel">
+   <h2>النموذج الجزيئي</h2>
+   <p class="desc">MOLECULAR STRUCTURE · INTERACTIVE MODEL</p>
+
+   <div class="viewer">
+    <svg id="moleculeSvg" viewBox="0 0 500 360" role="img" aria-label="نموذج جزيئي تفاعلي"></svg>
+    <div class="viewer-hint">اضغط على أي ذرة لعرض معلوماتها</div>
+   </div>
+
+   <div class="atom-details" id="atomDetails"></div>
+
+   <div class="actions">
+    <button class="btn" id="resetView">إعادة عرض النموذج</button>
+    <button class="btn" id="hideDetails">إخفاء معلومات الذرة</button>
+   </div>
+  </section>
+ </div>
+
+ <h2 class="section-title">مفاهيم هندسة الجزيئات</h2>
+ <div class="geometry-grid">
+  <div class="geometry">
+   <strong>Linear</strong>
+   <p>ترتيب خطي للذرات بزاوية تقارب 180°.</p>
+  </div>
+  <div class="geometry">
+   <strong>Bent</strong>
+   <p>شكل منحني ينتج عن تنافر أزواج الإلكترونات.</p>
+  </div>
+  <div class="geometry">
+   <strong>Tetrahedral</strong>
+   <p>ترتيب رباعي السطوح بزاوية تقارب 109.5°.</p>
+  </div>
+  <div class="geometry">
+   <strong>Trigonal Pyramidal</strong>
+   <p>شكل هرمي ثلاثي مثل جزيء الأمونيا.</p>
+  </div>
+  <div class="geometry">
+   <strong>Trigonal Planar</strong>
+   <p>ثلاث روابط في مستوى واحد بزاوية تقارب 120°.</p>
+  </div>
+  <div class="geometry">
+   <strong>Hexagonal</strong>
+   <p>حلقة سداسية من ذرات الكربون كما في البنزين.</p>
+  </div>
+ </div>
+
+ <div class="note">
+  هذه الأداة تعرض نماذج تعليمية ثنائية الأبعاد وليست محاكاة ثلاثية الأبعاد
+  أو حسابًا كميًا للمدارات الإلكترونية. الأشكال والزوايا المعروضة تقريبية.
+ </div>
+</main>
+
+<footer>TAGHEER TEAM · Interactive Chemistry Tools</footer>
+
+<script>
+const colors={
+ H:"#e8e8e8",C:"#444b58",O:"#ed5656",N:"#55a5ee",
+ Cl:"#48b875",Na:"#9b75d4"
+};
+
+const molecules={
+ water:{
+  formula:"H₂O",name:"الماء",bond:"تساهمية قطبية",
+  geometry:"منحني",atoms:[
+   {e:"O",x:250,y:170},{e:"H",x:155,y:245},{e:"H",x:345,y:245}
+  ],bonds:[[0,1],[0,2]]
+ },
+ co2:{
+  formula:"CO₂",name:"ثاني أكسيد الكربون",bond:"تساهمية مزدوجة",
+  geometry:"خطي",atoms:[
+   {e:"O",x:115,y:180},{e:"C",x:250,y:180},{e:"O",x:385,y:180}
+  ],bonds:[[0,1,"double"],[1,2,"double"]]
+ },
+ methane:{
+  formula:"CH₄",name:"الميثان",bond:"تساهمية أحادية",
+  geometry:"رباعي السطوح",atoms:[
+   {e:"C",x:250,y:175},{e:"H",x:250,y:65},
+   {e:"H",x:125,y:220},{e:"H",x:375,y:220},{e:"H",x:250,y:300}
+  ],bonds:[[0,1],[0,2],[0,3],[0,4]]
+ },
+ ammonia:{
+  formula:"NH₃",name:"الأمونيا",bond:"تساهمية قطبية",
+  geometry:"هرمي ثلاثي",atoms:[
+   {e:"N",x:250,y:145},{e:"H",x:130,y:250},
+   {e:"H",x:370,y:250},{e:"H",x:250,y:285}
+  ],bonds:[[0,1],[0,2],[0,3]]
+ },
+ oxygen:{
+  formula:"O₂",name:"الأكسجين",bond:"تساهمية مزدوجة",
+  geometry:"خطي",atoms:[
+   {e:"O",x:190,y:180},{e:"O",x:310,y:180}
+  ],bonds:[[0,1,"double"]]
+ },
+ nitrogen:{
+  formula:"N₂",name:"النيتروجين",bond:"تساهمية ثلاثية",
+  geometry:"خطي",atoms:[
+   {e:"N",x:190,y:180},{e:"N",x:310,y:180}
+  ],bonds:[[0,1,"triple"]]
+ },
+ hcl:{
+  formula:"HCl",name:"كلوريد الهيدروجين",bond:"تساهمية قطبية",
+  geometry:"خطي",atoms:[
+   {e:"H",x:180,y:180},{e:"Cl",x:320,y:180}
+  ],bonds:[[0,1]]
+ },
+ ethene:{
+  formula:"C₂H₄",name:"الإيثين",bond:"تساهمية مزدوجة",
+  geometry:"مستوي",atoms:[
+   {e:"C",x:200,y:180},{e:"C",x:300,y:180},
+   {e:"H",x:115,y:95},{e:"H",x:115,y:265},
+   {e:"H",x:385,y:95},{e:"H",x:385,y:265}
+  ],bonds:[[0,1,"double"],[0,2],[0,3],[1,4],[1,5]]
+ },
+ ethanol:{
+  formula:"C₂H₆O",name:"الإيثانول",bond:"تساهمية",
+  geometry:"غير خطي",atoms:[
+   {e:"C",x:145,y:180},{e:"C",x:260,y:180},{e:"O",x:365,y:180},
+   {e:"H",x:90,y:90},{e:"H",x:90,y:270},
+   {e:"H",x:145,y:285},{e:"H",x:260,y:75},
+   {e:"H",x:260,y:285},{e:"H",x:425,y:100}
+  ],bonds:[[0,1],[1,2],[0,3],[0,4],[0,5],[1,6],[1,7],[2,8]]
+ },
+ benzene:{
+  formula:"C₆H₆",name:"البنزين",bond:"تساهمية مترافقة",
+  geometry:"حلقة سداسية مستوية",atoms:[
+   {e:"C",x:250,y:70},{e:"C",x:340,y:120},
+   {e:"C",x:340,y:220},{e:"C",x:250,y:270},
+   {e:"C",x:160,y:220},{e:"C",x:160,y:120},
+   {e:"H",x:250,y:25},{e:"H",x:390,y:95},
+   {e:"H",x:390,y:245},{e:"H",x:250,y:315},
+   {e:"H",x:110,y:245},{e:"H",x:110,y:95}
+  ],bonds:[
+   [0,1,"double"],[1,2],[2,3,"double"],
+   [3,4],[4,5,"double"],[5,0],
+   [0,6],[1,7],[2,8],[3,9],[4,10],[5,11]
+  ]
+ },
+ nacl:{
+  formula:"NaCl",name:"كلوريد الصوديوم",bond:"أيونية",
+  geometry:"تركيب أيوني مبسط",atoms:[
+   {e:"Na",x:190,y:180},{e:"Cl",x:310,y:180}
+  ],bonds:[[0,1]]
+ }
+};
+
+const svg=document.getElementById("moleculeSvg");
+const select=document.getElementById("molecule");
+const ns="http://www.w3.org/2000/svg";
+
+function node(tag,attrs){
+ const el=document.createElementNS(ns,tag);
+ Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+ return el;
+}
+
+function draw(){
+ const molecule=molecules[select.value];
+ svg.innerHTML="";
+ document.getElementById("formula").textContent=molecule.formula;
+ document.getElementById("name").textContent=molecule.name;
+ document.getElementById("bondType").textContent=molecule.bond;
+ document.getElementById("geometry").textContent=molecule.geometry;
+ document.getElementById("atomCount").textContent=molecule.atoms.length;
+ document.getElementById("atomDetails").style.display="none";
+
+ molecule.bonds.forEach(bond=>{
+  const a=molecule.atoms[bond[0]];
+  const b=molecule.atoms[bond[1]];
+  const dx=b.x-a.x,dy=b.y-a.y;
+  const length=Math.sqrt(dx*dx+dy*dy);
+  const px=-dy/length,py=dx/length;
+  const offsets=bond[2]==="triple"?[-7,0,7]:
+                bond[2]==="double"?[-4,4]:[0];
+
+  offsets.forEach(offset=>{
+   const line=node("line",{
+    x1:a.x+px*offset,y1:a.y+py*offset,
+    x2:b.x+px*offset,y2:b.y+py*offset,
+    class:"bond"
+   });
+   svg.appendChild(line);
+  });
+ });
+
+ molecule.atoms.forEach((atom,index)=>{
+  const group=node("g",{class:"atom-group"});
+  const circle=node("circle",{
+   cx:atom.x,cy:atom.y,r:atom.e==="H"?19:27,
+   fill:colors[atom.e]||"#777",
+   class:"atom-circle"
+  });
+  const label=node("text",{
+   x:atom.x,y:atom.y+1,class:"atom-label"
+  });
+  label.textContent=atom.e;
+
+  group.appendChild(circle);
+  group.appendChild(label);
+
+  group.addEventListener("click",()=>{
+   const descriptions={
+    H:"الهيدروجين: العدد الذري 1",
+    C:"الكربون: العدد الذري 6",
+    N:"النيتروجين: العدد الذري 7",
+    O:"الأكسجين: العدد الذري 8",
+    Cl:"الكلور: العدد الذري 17",
+    Na:"الصوديوم: العدد الذري 11"
+   };
+   const details=document.getElementById("atomDetails");
+   details.innerHTML=`<b>${atom.e}</b> — ${descriptions[atom.e]||"عنصر كيميائي"}<br>موضع الذرة في النموذج: ${index+1}`;
+   details.style.display="block";
+  });
+
+  svg.appendChild(group);
+ });
+}
+
+select.addEventListener("change",draw);
+document.getElementById("resetView").addEventListener("click",draw);
+document.getElementById("hideDetails").addEventListener("click",()=>{
+ document.getElementById("atomDetails").style.display="none";
+});
+draw();
+</script>
+</body>
+</html>
