@@ -143,11 +143,24 @@
     }
 
     .science-tool {
+      display: block;
       min-height: 185px;
       padding: 22px;
       border-radius: 12px;
       border: 1px solid var(--line);
       background: #0a1d33;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .science-tool:hover,
+    .science-tool:focus-visible {
+      border-color: #66bdef90;
+      background: #0d2946;
+      transform: translateY(-4px);
+      outline: none;
     }
 
     .science-tool .tool-icon {
@@ -190,9 +203,11 @@
       .course-grid {
         grid-template-columns: 1fr;
       }
+
       .science-tools {
         grid-template-columns: repeat(2,1fr);
       }
+
       .chem-symbol {
         font-size: 110px;
         left: 2%;
@@ -203,9 +218,11 @@
       .science-tools {
         grid-template-columns: 1fr;
       }
+
       .chem-stats {
         gap: 7px;
       }
+
       .chem-stat {
         padding: 12px;
       }
@@ -255,13 +272,15 @@
             <strong>118</strong>
             <span>عنصرًا في الجدول الدوري</span>
           </div>
+
           <div class="chem-stat">
             <strong>04</strong>
             <span>مساقات رئيسية</span>
           </div>
+
           <div class="chem-stat">
             <strong>06</strong>
-            <span>أدوات علمية مخططة</span>
+            <span>أدوات ومحاكيات</span>
           </div>
         </div>
       </div>
@@ -275,6 +294,7 @@
           <span class="kicker">COURSE LIBRARY / 01</span>
           <h2>المواد <em>الدراسية</em></h2>
         </div>
+
         <p>كل مادة ستكون بوابة مباشرة إلى مجلدها الخاص على Google Drive.</p>
       </div>
 
@@ -331,57 +351,59 @@
 
     <section class="section tools-section" id="laboratory">
       <div class="shell">
+
         <div class="section-head">
           <div>
             <span class="kicker">DIGITAL LAB / 02</span>
             <h2>المختبر <em>التفاعلي</em></h2>
           </div>
-          <p>أدوات رقمية قيد التطوير لتجربة المفاهيم الكيميائية بصورة تفاعلية.</p>
+
+          <p>اختر إحدى المحاكيات التفاعلية وافتحها مباشرة لاستكشاف المفاهيم الكيميائية.</p>
         </div>
 
         <div class="science-tools">
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/periodic-table.html">
             <span class="tool-icon">⚛</span>
             <h3>Periodic Table Explorer</h3>
             <p>جدول دوري تفاعلي لاستكشاف العناصر وخصائصها.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/molar-mass.html">
             <span class="tool-icon">∑</span>
             <h3>Molar Mass Calculator</h3>
             <p>حساب الكتلة المولية للصيغ الكيميائية والمركبات.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/element-temperature.html">
             <span class="tool-icon">🌡</span>
             <h3>Temperature Simulator</h3>
             <p>استكشاف تأثير درجة الحرارة في حالات المادة.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/ideal-gas.html">
             <span class="tool-icon">PV</span>
             <h3>Ideal Gas Simulator</h3>
             <p>محاكاة قانون الغاز المثالي وتغيّر متغيراته.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/molecular-structure.html">
             <span class="tool-icon">⌬</span>
             <h3>Molecular Structure Visualizer</h3>
             <p>عرض البنية الجزيئية والأشكال الهندسية للجزيئات.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
-          <article class="science-tool">
+          <a class="science-tool" href="../tools/ph-simulator.html">
             <span class="tool-icon">pH</span>
             <h3>pH Simulator</h3>
             <p>استكشاف الأحماض والقواعد ومقياس الرقم الهيدروجيني.</p>
-            <span class="tool-status">قيد التطوير</span>
-          </article>
+            <span class="tool-status">افتح المحاكي ↗</span>
+          </a>
 
         </div>
       </div>
@@ -430,6 +452,7 @@
         <span class="wordmark-symbol">T</span>
         <span>TAGHEER <b>TEAM</b></span>
       </a>
+
       <p>قسم الكيمياء — TAGHEER TEAM</p>
       <a href="../index.html">العودة للرئيسية ↑</a>
     </div>
