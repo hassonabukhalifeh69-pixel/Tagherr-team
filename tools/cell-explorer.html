@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#061326">
+<title>3D Cell Explorer | TAGHEER TEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#061326;--panel:#0c1e34;--blue:#66bdef;
+ --text:#f3f8ff;--muted:#91a8bf;--line:#ffffff18;
+ --green:#54d6a0;--purple:#b18aff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Alexandria',sans-serif}
+button,select{font-family:inherit}
+.topbar{
+ height:70px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 5%;
+ background:#071629;border-bottom:1px solid var(--line)
+}
+.brand{font-size:14px;font-weight:800;letter-spacing:1px}
+.brand span{color:var(--blue)}
+.back{font-size:10px;color:var(--muted);text-decoration:none}
+.hero{
+ padding:48px 5% 35px;
+ background:radial-gradient(ellipse at 20% 0%,#38b78b20,transparent 55%)
+}
+.kicker{font-size:10px;letter-spacing:2px;color:var(--green)}
+h1{font-size:clamp(27px,5vw,46px);margin:14px 0}
+.hero p{font-size:12px;color:var(--muted);line-height:2}
+.container{max-width:1150px;margin:auto;padding:25px 5% 65px}
+.toolbar{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px
+}
+.toolbar label{font-size:10px;color:var(--muted)}
+select{
+ background:var(--panel);color:white;border:1px solid var(--line);
+ padding:12px;border-radius:8px;min-width:190px;font-size:10px
+}
+.toggle{
+ display:flex;gap:8px;align-items:center;color:var(--muted);
+ font-size:10px
+}
+.toggle input{accent-color:var(--blue)}
+.layout{
+ display:grid;grid-template-columns:1.35fr .75fr;
+ gap:16px;align-items:stretch
+}
+.panel{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:14px;padding:20px
+}
+.panel h2{font-size:14px;margin-bottom:8px}
+.desc{font-size:10px;color:var(--muted);line-height:2;margin-bottom:15px}
+.viewer{
+ min-height:440px;display:flex;align-items:center;
+ justify-content:center;position:relative;overflow:hidden;
+ border-radius:11px;
+ background:
+ radial-gradient(circle at center,#1a4b5b66,transparent 60%),
+ #071629
+}
+.viewer svg{width:100%;height:430px;overflow:visible}
+.organelle{cursor:pointer;transition:filter .2s}
+.organelle:hover{filter:brightness(1.4)}
+.organelle.selected{filter:drop-shadow(0 0 9px #66bdef)}
+.organelle-label{
+ fill:#fff;font-size:10px;font-family:Arial,sans-serif;
+ text-anchor:middle;paint-order:stroke;stroke:#061326;
+ stroke-width:3px;stroke-linejoin:round;pointer-events:none
+}
+.viewer-hint{
+ position:absolute;bottom:12px;left:0;right:0;
+ text-align:center;color:var(--muted);font-size:9px
+}
+.legend{
+ display:flex;gap:10px;flex-wrap:wrap;margin-top:15px
+}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:9px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%}
+.detail-card{
+ min-height:300px;padding:18px;
+ background:#071629;border:1px solid var(--line);border-radius:11px
+}
+.detail-icon{
+ width:55px;height:55px;border-radius:14px;
+ display:grid;place-items:center;font-size:25px;
+ background:#66bdef18;color:var(--blue);margin-bottom:17px
+}
+.detail-card h3{font-size:17px;margin-bottom:5px}
+.detail-en{direction:ltr;text-align:right;color:var(--blue);font-size:10px}
+.detail-card p{font-size:10px;color:var(--muted);line-height:2.2;margin-top:15px}
+.detail-type{
+ display:inline-block;margin-top:14px;padding:6px 10px;
+ border-radius:30px;background:#54d6a014;color:var(--green);font-size:9px
+}
+.placeholder{
+ color:var(--muted);font-size:10px;line-height:2;
+ text-align:center;padding:60px 10px
+}
+.stats{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:10px;margin-top:16px
+}
+.stat{
+ padding:13px;background:var(--panel);
+ border:1px solid var(--line);border-radius:9px
+}
+.stat strong{display:block;font-size:19px;color:var(--green)}
+.stat span{font-size:9px;color:var(--muted)}
+.note{
+ margin-top:18px;padding:14px;border-radius:9px;
+ background:#66bdef0c;border:1px solid #66bdef25;
+ color:var(--muted);font-size:9px;line-height:2
+}
+footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--muted);font-size:10px}
+@media(max-width:800px){
+ .layout{grid-template-columns:1fr}
+ .viewer{min-height:350px}
+ .viewer svg{height:350px}
+}
+@media(max-width:450px){
+ .panel{padding:14px}
+ .stats{gap:6px}
+ .stat{padding:10px}
+ .stat strong{font-size:16px}
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+ <a class="brand" href="../index.html">TAGHEER <span>TEAM</span></a>
+ <a class="back" href="../index.html">← العودة للرئيسية</a>
+</header>
+
+<section class="hero">
+ <span class="kicker">BIOLOGY LAB / TOOL 01</span>
+ <h1>3D Cell <span style="color:#54d6a0">Explorer.</span></h1>
+ <p>
+  استكشف عالم الخلايا من الداخل، وتعرّف على العضيات
+  وتركيبها ووظائفها من خلال نموذج تفاعلي تعليمي.
+ </p>
+</section>
+
+<main class="container">
+
+ <div class="toolbar">
+  <div>
+   <label for="cellType">نوع الخلية</label><br>
+   <select id="cellType">
+    <option value="animal">Animal Cell — خلية حيوانية</option>
+    <option value="plant">Plant Cell — خلية نباتية</option>
+   </select>
+  </div>
+
+  <label class="toggle">
+   <input type="checkbox" id="showLabels" checked>
+   إظهار أسماء العضيات
+  </label>
+ </div>
+
+ <div class="layout">
+
+  <section class="panel">
+   <h2>النموذج الخلوي</h2>
+   <p class="desc">اضغط على أي عضية داخل الخلية لاستكشاف وظيفتها.</p>
+
+   <div class="viewer">
+    <svg id="cellSvg" viewBox="0 0 600 430" role="img" aria-label="رسم توضيحي تفاعلي للخلية">
+    </svg>
+    <div class="viewer-hint">اضغط على العضيات لاستكشافها</div>
+   </div>
+
+   <div class="legend">
+    <div class="legend-item"><i class="dot" style="background:#a78bfa"></i> النواة</div>
+    <div class="legend-item"><i class="dot" style="background:#f0a56b"></i> الميتوكندريا</div>
+    <div class="legend-item"><i class="dot" style="background:#66bdef"></i> الشبكة الإندوبلازمية</div>
+    <div class="legend-item"><i class="dot" style="background:#54d6a0"></i> البلاستيدات</div>
+   </div>
+  </section>
+
+  <section class="panel">
+   <h2>معلومات العضية</h2>
+   <p class="desc">ORGANELLE INFORMATION</p>
+
+   <div class="detail-card" id="detailCard">
+    <div class="placeholder">
+     <div style="font-size:35px;color:#66bdef">⌖</div>
+     اختر عضية من الرسم لعرض اسمها ووظيفتها.
+    </div>
+   </div>
+  </section>
+
+ </div>
+
+ <div class="stats">
+  <div class="stat">
+   <strong id="organelleCount">0</strong>
+   <span>عضيات معروضة</span>
+  </div>
+  <div class="stat">
+   <strong id="cellName">Animal</strong>
+   <span>نوع الخلية</span>
+  </div>
+  <div class="stat">
+   <strong>01</strong>
+   <span>نموذج تفاعلي</span>
+  </div>
+ </div>
+
+ <div class="note">
+  <b style="color:#66bdef">ملاحظة علمية:</b>
+  النموذج رسم تعليمي ثنائي الأبعاد، وليس نموذجًا ثلاثي الأبعاد
+  حقيقيًا. كما أن أشكال العضيات وأحجامها ليست مرسومة بمقياس حقيقي.
+  بعض العضيات تختلف بين أنواع الخلايا.
+ </div>
+
+</main>
+
+<footer>TAGHEER TEAM · Interactive Biology Tools</footer>
+
+<script>
+const svg=document.getElementById("cellSvg");
+const cellType=document.getElementById("cellType");
+const showLabels=document.getElementById("showLabels");
+const ns="http://www.w3.org/2000/svg";
+
+const organelles={
+ nucleus:{
+  name:"النواة",en:"Nucleus",icon:"◉",type:"عضية رئيسية",
+  description:"تحتوي النواة على معظم المادة الوراثية DNA في الخلية، وتعمل كمركز لتنظيم أنشطة الخلية والتعبير الجيني.",
+  color:"#a78bfa"
+ },
+ nucleolus:{
+  name:"النُّوَيّة",en:"Nucleolus",icon:"●",type:"منطقة داخل النواة",
+  description:"تشارك النُّوَيّة في تصنيع وحدات الريبوسومات من خلال إنتاج ومعالجة RNA الريبوسومي وتجميع مكوناتها.",
+  color:"#d4a5ff"
+ },
+ mitochondria:{
+  name:"الميتوكندريا",en:"Mitochondrion",icon:"ϟ",type:"عضية إنتاج الطاقة",
+  description:"تُعد موقعًا رئيسيًا للتنفس الخلوي الهوائي وإنتاج معظم ATP في الخلايا حقيقية النواة.",
+  color:"#f0a56b"
+ },
+ roughER:{
+  name:"الشبكة الإندوبلازمية الخشنة",en:"Rough Endoplasmic Reticulum",icon:"▤",type:"عضية تصنيع ونقل",
+  description:"تحتوي على ريبوسومات مرتبطة بسطحها، وتشارك في تصنيع البروتينات المخصصة للإفراز أو للأغشية أو لبعض العضيات.",
+  color:"#66bdef"
+ },
+ smoothER:{
+  name:"الشبكة الإندوبلازمية الملساء",en:"Smooth Endoplasmic Reticulum",icon:"≈",type:"عضية تصنيع",
+  description:"تشارك في تصنيع الدهون، واستقلاب بعض المواد، وتخزين أيونات الكالسيوم في أنواع معينة من الخلايا.",
+  color:"#5ca5d8"
+ },
+ golgi:{
+  name:"جهاز جولجي",en:"Golgi Apparatus",icon:"≋",type:"عضية معالجة وتغليف",
+  description:"يُعدّل البروتينات والدهون ويصنفها ويغلفها في حويصلات لتوجيهها إلى مواقعها المناسبة داخل الخلية أو خارجها.",
+  color:"#f3c36d"
+ },
+ ribosome:{
+  name:"الريبوسومات",en:"Ribosomes",icon:"•",type:"موقع تصنيع البروتين",
+  description:"تترجم المعلومات الموجودة في mRNA إلى سلاسل من الأحماض الأمينية لتكوين البروتينات.",
+  color:"#e9d68a"
+ },
+ lysosome:{
+  name:"الجسيم الحال",en:"Lysosome",icon:"●",type:"عضية هضم خلوي",
+  description:"يحتوي على إنزيمات تساعد على تفكيك الجزيئات الكبيرة والمكونات الخلوية التالفة وإعادة تدوير بعض موادها.",
+  color:"#ec8c9d"
+ },
+ centriole:{
+  name:"المريكز",en:"Centriole",icon:"▥",type:"تنظيم الأنابيب الدقيقة",
+  description:"يساهم في تنظيم الأنابيب الدقيقة، ويساعد في تكوين أقطاب مغزل الانقسام في كثير من الخلايا الحيوانية.",
+  color:"#7dd3c7"
+ },
+ membrane:{
+  name:"الغشاء البلازمي",en:"Plasma Membrane",icon:"◯",type:"حدود الخلية",
+  description:"يتكون أساسًا من طبقة مزدوجة من الدهون الفسفورية مع بروتينات، وينظم مرور المواد والإشارات بين الخلية وبيئتها.",
+  color:"#66bdef"
+ },
+ cytoplasm:{
+  name:"السيتوبلازم",en:"Cytoplasm",icon:"◌",type:"وسط خلوي",
+  description:"يشمل السيتوسول والمكونات الموجودة داخله، ويحدث فيه عدد كبير من التفاعلات والعمليات الخلوية.",
+  color:"#54d6a0"
+ },
+ cellWall:{
+  name:"الجدار الخلوي",en:"Cell Wall",icon:"▣",type:"تركيب داعم",
+  description:"يتكون في الخلايا النباتية أساسًا من السليلوز، ويوفر الدعم والحماية ويساعد في المحافظة على شكل الخلية.",
+  color:"#54d6a0"
+ },
+ chloroplast:{
+  name:"البلاستيدة الخضراء",en:"Chloroplast",icon:"✳",type:"عضية البناء الضوئي",
+  description:"تحتوي على الكلوروفيل وأغشية الثايلاكويد، وتحدث فيها تفاعلات البناء الضوئي التي تحول الطاقة الضوئية إلى طاقة كيميائية.",
+  color:"#54d6a0"
+ },
+ vacuole:{
+  name:"الفجوة العصارية",en:"Central Vacuole",icon:"◉",type:"تخزين وتنظيم",
+  description:"تخزن الماء والمواد المذابة وبعض المركبات، وتساهم في الحفاظ على ضغط الامتلاء ودعم الخلية النباتية.",
+  color:"#66bdef"
+ },
+ plasmodesmata:{
+  name:"الروابط البلازمية",en:"Plasmodesmata",icon:"↔",type:"قنوات اتصال",
+  description:"قنوات تمر عبر الجدران الخلوية وتسمح بالتواصل وتبادل بعض المواد والإشارات بين الخلايا النباتية المتجاورة.",
+  color:"#f0c36d"
+ }
+};
+
+function el(tag,attrs={},parent=svg){
+ const item=document.createElementNS(ns,tag);
+ Object.entries(attrs).forEach(([key,value])=>item.setAttribute(key,value));
+ parent.appendChild(item);
+ return item;
+}
+
+function organelle(id,label,draw){
+ const group=el("g",{class:"organelle","data-id":id});
+ draw(group);
+ if(showLabels.checked){
+  const text=el("text",{
+   x:label.x,y:label.y,class:"organelle-label"
+  },group);
+  text.textContent=label.text;
+ }
+ group.addEventListener("click",()=>showDetails(id,group));
+ return group;
+}
+
+function showDetails(id,group){
+ document.querySelectorAll(".organelle").forEach(x=>x.classList.remove("selected"));
+ group.classList.add("selected");
+
+ const item=organelles[id];
+ const card=document.getElementById("detailCard");
+
+ card.innerHTML=`
+  <div class="detail-icon" style="color:${item.color};background:${item.color}20">
+   ${item.icon}
+  </div>
+  <h3>${item.name}</h3>
+  <div class="detail-en">${item.en}</div>
+  <span class="detail-type">${item.type}</span>
+  <p>${item.description}</p>
+ `;
+}
+
+function drawCell(){
+ svg.innerHTML="";
+ const plant=cellType.value==="plant";
+
+ const bg=el("g");
+ if(plant){
+  el("rect",{x:35,y:30,width:530,height:370,rx:85,fill:"#398c5820",stroke:"#54d6a0", "stroke-width":13},bg);
+  el("rect",{x:48,y:43,width:504,height:344,rx:75,fill:"#66bdef12",stroke:"#9acb8c","stroke-width":2},bg);
+ }else{
+  el("ellipse",{cx:300,cy:215,rx:258,ry:178,fill:"#66bdef14",stroke:"#66bdef","stroke-width":5},bg);
+  el("ellipse",{cx:300,cy:215,rx:250,ry:170,fill:"#66bdef08",stroke:"#ffffff20","stroke-width":1},bg);
+ }
+
+ organelle("cytoplasm",{x:300,y:395,text:"Cytoplasm"},g=>{
+  el("ellipse",{cx:300,cy:215,rx:plant?240:248,ry:plant?155:165,fill:"#66bdef08"},g);
+ });
+
+ organelle("nucleus",{x:270,y:180,text:"Nucleus"},g=>{
+  el("ellipse",{cx:280,cy:205,rx:65,ry:55,fill:"#8064bb",stroke:"#c5a6ff","stroke-width":3},g);
+  el("ellipse",{cx:280,cy:205,rx:57,ry:47,fill:"#9b7bd4","stroke":"#ffffff40","stroke-width":1},g);
+ });
+
+ organelle("nucleolus",{x:300,y:220,text:""},g=>{
+  el("circle",{cx:300,cy:220,r:17,fill:"#d4a5ff",stroke:"#f0d8ff","stroke-width":2},g);
+ });
+
+ organelle("roughER",{x:155,y:145,text:"Rough ER"},g=>{
+  for(let i=0;i<4;i++){
+   el("path",{
+    d:`M ${130+i*3} ${170+i*16} Q ${180+i*4} ${120+i*12} ${220+i*2} ${170+i*13}`,
+    fill:"none",stroke:"#66bdef","stroke-width":5,"stroke-linecap":"round"
+   },g);
+   for(let j=0;j<5;j++){
+    el("circle",{cx:145+j*14,cy:158+i*14,r:2.2,fill:"#e9d68a"},g);
+   }
+  }
+ });
+
+ organelle("smoothER",{x:150,y:270,text:"Smooth ER"},g=>{
+  for(let i=0;i<3;i++){
+   el("path",{
+    d:`M 115 ${270+i*15} Q 150 ${240+i*17} 195 ${270+i*13}`,
+    fill:"none",stroke:"#5ca5d8","stroke-width":5,"stroke-linecap":"round"
+   },g);
+  }
+ });
+
+ organelle("golgi",{x:410,y:145,text:"Golgi"},g=>{
+  for(let i=0;i<5;i++){
+   el("path",{
+    d:`M ${370+i*5} ${130+i*12} Q 405 ${110+i*12} 440 ${130+i*12}`,
+    fill:"none",stroke:"#f3c36d","stroke-width":7,"stroke-linecap":"round"
+   },g);
+  }
+  el("circle",{cx:453,cy:180,r:8,fill:"#f3c36d"},g);
+  el("circle",{cx:365,cy:183,r:6,fill:"#f3c36d"},g);
+ });
+
+ organelle("mitochondria",{x:405,y:285,text:"Mitochondria"},g=>{
+  el("ellipse",{cx:410,cy:285,rx:35,ry:17,fill:"#b96847",stroke:"#ffb37e","stroke-width":2,transform:"rotate(-25 410 285)"},g);
+  el("path",{d:"M 380 287 Q 390 264 400 287 T 420 286 T 440 275",fill:"none",stroke:"#ffcc91","stroke-width":3},g);
+ });
+
+ if(!plant){
+  organelle("lysosome",{x:485,y:230,text:"Lysosome"},g=>{
+   el("circle",{cx:485,cy:230,r:14,fill:"#d8798c",stroke:"#ffb1bd","stroke-width":2},g);
+   el("circle",{cx:480,cy:225,r:3,fill:"#ffd2d8"},g);
+   el("circle",{cx:490,cy:234,r:3,fill:"#ffd2d8"},g);
+  });
+
+  organelle("centriole",{x:335,y:320,text:"Centriole"},g=>{
+   el("rect",{x:325,y:306,width:12,height:34,rx:4,fill:"#64b8b0",transform:"rotate(35 331 323)"},g);
+   el("rect",{x:342,y:307,width:12,height:34,rx:4,fill:"#64b8b0",transform:"rotate(-35 348 323)"},g);
+  });
+ }else{
+  organelle("cellWall",{x:300,y:20,text:"Cell Wall"},g=>{
+   el("rect",{x:35,y:30,width:530,height:370,rx:85,fill:"none",stroke:"#54d6a0","stroke-width":12},g);
+  });
+
+  organelle("chloroplast",{x:450,y:80,text:"Chloroplast"},g=>{
+   el("ellipse",{cx:450,cy:80,rx:29,ry:16,fill:"#267c4c",stroke:"#9de6a7","stroke-width":2},g);
+   for(let i=0;i<4;i++){
+    el("path",{d:`M ${432+i*11} 70 Q ${437+i*11} 80 ${432+i*11} 90`,stroke:"#b4f0a7","stroke-width":2,fill:"none"},g);
+   }
+  });
+
+  organelle("vacuole",{x:430,y:245,text:"Vacuole"},g=>{
+   el("ellipse",{cx:430,cy:245,rx:65,ry:43,fill:"#397da366",stroke:"#8bd5ff","stroke-width":3},g);
+   el("ellipse",{cx:430,cy:245,rx:55,ry:33,fill:"#66bdef12"},g);
+  });
+
+  organelle("plasmodesmata",{x:530,y:345,text:"Plasmodesmata"},g=>{
+   for(let i=0;i<3;i++){
+    el("line",{x1:545,y1:325+i*12,x2:558,y2:325+i*12,stroke:"#f0c36d","stroke-width":3},g);
+   }
+  });
+ }
+
+ organelle("ribosome",{x:220,y:330,text:"Ribosomes"},g=>{
+  [[215,320],[230,340],[245,310],[190,345],[265,350]].forEach(p=>{
+   el("circle",{cx:p[0],cy:p[1],r:4,fill:"#e9d68a"},g);
+  });
+ });
+
+ document.getElementById("organelleCount").textContent=
+  plant?"11":"10";
+ document.getElementById("cellName").textContent=
+  plant?"Plant":"Animal";
+
+ document.getElementById("detailCard").innerHTML=`
+  <div class="placeholder">
+   <div style="font-size:35px;color:#54d6a0">⌖</div>
+   اختر عضية من الرسم لعرض اسمها ووظيفتها.
+  </div>
+ `;
+}
+
+cellType.addEventListener("change",drawCell);
+showLabels.addEventListener("change",drawCell);
+drawCell();
+</script>
+</body>
+</html>
